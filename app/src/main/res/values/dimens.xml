@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="podcast_list_item_card_elevation">6dp</dimen>
+    <dimen name="podcast_list_item_card_margin">4dp</dimen>
+    <dimen name="podcast_list_item_margin">4dp</dimen>
+    <dimen name="podcast_list_item_short_margin">2dp</dimen>
+    <dimen name="podcast_list_item_padding">8dp</dimen>
+    <dimen name="podcast_list_item_textview_max_lines">2</dimen>
+    <dimen name="podcast_list_item_image_view_width">120dp</dimen>
+    <dimen name="podcast_list_item_image_view_height">90dp</dimen>
+
+    <dimen name="podcast_list_toolbar_elevation">6dp</dimen>
+
+    <integer name="podcast_list_column_items">2</integer>
+    <integer name="shows_list_column_items">1</integer>
+    <integer name="seek_time_in_secs">5</integer>
+
+    <!--SHOW CONTROLS DIMEN-->
+    <dimen name="show_name_text_size">24sp</dimen>
+    <dimen name="show_channel_text_size">18sp</dimen>
+    <dimen name="show_description_text_size">16sp</dimen>
+    <dimen name="show_player_frame_layout_height">200dp</dimen>
+    <dimen name="show_player_control_button_height">30dp</dimen>
+    <dimen name="show_player_control_button_width">80dp</dimen>
+    <dimen name="show_player_control_linear_layout_top_pad">4dp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
+</resources>

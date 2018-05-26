@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="playback_view_player_margin">4dp</dimen>
+    <dimen name="playback_view_left_margin">8dp</dimen>
+    <dimen name="playback_view_text1_top_margin">4dp</dimen>
+    <dimen name="playback_view_text2_top_margin">28dp</dimen>
+    <dimen name="playback_view_text1_text_size">18sp</dimen>
+    <dimen name="playback_view_text2_text_size">14sp</dimen>
+
+    <!--SHOW CONTROLS DIMEN-->
+    <dimen name="show_name_text_size">24sp</dimen>
+    <dimen name="show_channel_text_size">18sp</dimen>
+    <dimen name="show_description_text_size">16sp</dimen>
+    <dimen name="show_player_frame_layout_height">200dp</dimen>
+    <dimen name="show_player_control_button_height">20dp</dimen>
+    <dimen name="show_player_control_button_width">80dp</dimen>
+    <dimen name="show_player_control_linear_layout_top_pad">2dp</dimen>
+    <dimen name="show_player_control_time_pos_dur_text_size">8sp</dimen>
+    <dimen name="show_player_control_title_text_size">10sp</dimen>
+    <dimen name="show_player_control_author_text_size">8sp</dimen>
+    <dimen name="show_player_control_margin">4dp</dimen>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="podcast_list_column_items">3</integer>
+    <integer name="shows_list_column_items">1</integer>
+
+</resources>

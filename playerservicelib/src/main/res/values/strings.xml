@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PlayerServiceLib</string>
+    <string name="playback_view_tools_text">This is the name of the media</string>
+    <string name="playback_view_image_desc">Show Image</string>
+</resources>

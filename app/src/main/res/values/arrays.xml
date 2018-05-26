@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="pref_lang_options_labels">
+        <item>@string/pref_lang_opt_label_eng</item>
+        <item>@string/pref_lang_opt_label_ger</item>
+        <item>@string/pref_lang_opt_label_spa</item>
+        <item>@string/pref_lang_opt_label_fre</item>
+        <item>@string/pref_lang_opt_label_rus</item>
+        <item>@string/pref_lang_opt_label_jap</item>
+        <item>@string/pref_lang_opt_label_hin</item>
+        <item>@string/pref_lang_opt_label_gre</item>
+        <item>@string/pref_lang_opt_label_por</item>
+    </array>
+    <array name="pref_lang_options_values">
+        <item>@string/pref_lang_opt_value_eng</item>
+        <item>@string/pref_lang_opt_value_ger</item>
+        <item>@string/pref_lang_opt_value_spa</item>
+        <item>@string/pref_lang_opt_value_fre</item>
+        <item>@string/pref_lang_opt_value_rus</item>
+        <item>@string/pref_lang_opt_value_jap</item>
+        <item>@string/pref_lang_opt_value_hin</item>
+        <item>@string/pref_lang_opt_value_gre</item>
+        <item>@string/pref_lang_opt_value_por</item>
+    </array>
+</resources>

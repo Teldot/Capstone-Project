@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="playback_view_text_color">#ffffff</color>
+
+    <color name="background_color_button">#cc2d2d2d</color>
+    <color name="background_color_player_layout">#cc2d2d2d</color>
+</resources>
