@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:scrollbars="vertical"
+    tools:context=".ui.AboutActivity">
+    <android.support.v7.widget.Toolbar
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="6dp"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:navigationIcon="@drawable/ic_chevron_left_black_24dp"
+        app:title="@string/about_act_toolbar_title" />
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Display1"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/podcast_list_item_card_margin"
+        android:text="@string/about_act_app_name" />
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/about_act_app_author"/>
+
+    <ImageView
+        app:srcCompat="@drawable/ic_podcast"
+        android:layout_gravity="center"
+        android:layout_width="200dp"
+        android:layout_height="200dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Large"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/podcast_list_item_card_margin"
+        android:text="@string/about_act_title" />
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_marginLeft="@dimen/podcast_list_item_card_margin"
+        android:layout_marginStart="@dimen/podcast_list_item_card_margin"
+        android:layout_marginRight="@dimen/podcast_list_item_card_margin"
+        android:layout_marginEnd="@dimen/podcast_list_item_card_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_act_pic_title" />
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_marginLeft="@dimen/podcast_list_item_card_margin"
+        android:layout_marginStart="@dimen/podcast_list_item_card_margin"
+        android:layout_marginRight="@dimen/podcast_list_item_card_margin"
+        android:layout_marginEnd="@dimen/podcast_list_item_card_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_act_pic_license" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_marginLeft="@dimen/podcast_list_item_card_margin"
+        android:layout_marginStart="@dimen/podcast_list_item_card_margin"
+        android:layout_marginRight="@dimen/podcast_list_item_card_margin"
+        android:layout_marginEnd="@dimen/podcast_list_item_card_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_act_ico_title" />
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_marginLeft="@dimen/podcast_list_item_card_margin"
+        android:layout_marginStart="@dimen/podcast_list_item_card_margin"
+        android:layout_marginRight="@dimen/podcast_list_item_card_margin"
+        android:layout_marginEnd="@dimen/podcast_list_item_card_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_act_ico_license" />
+
+</LinearLayout>

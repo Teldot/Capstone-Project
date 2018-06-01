@@ -39,6 +39,8 @@
             android:name="com.example.android.playerservicelib.service.MediaPlaybackService"
             android:exported="true" />
 
+        <service android:name=".ui.widget.PlayerWidgetService"/>
+
         <receiver android:name=".ui.widget.NowPlayingWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -48,6 +50,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/now_playing_widget_info" />
         </receiver>
+
     </application>
 
 </manifest>

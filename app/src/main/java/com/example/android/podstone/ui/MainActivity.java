@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.android.podstone.R;
 import com.example.android.podstone.data.entities.Channel;
 import com.example.android.podstone.data.entities.SearchResult;
+import com.example.android.podstone.ui.widget.PlayerWidgetService;
 import com.example.android.podstone.utils.FetchDataTask;
 
 public class MainActivity extends AppCompatActivity implements ChannelsListAdapter.ChannelsListAdapterOnClickHandler, FetchDataTask.AsyncTaskCompleteListener {
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
     protected void onResume() {
         super.onResume();
         loadPodcasts(searchQuery);
+        PlayerWidgetService.startActionWidgetPlaying(this);
     }
 
     private void loadPodcasts(String queryString) {

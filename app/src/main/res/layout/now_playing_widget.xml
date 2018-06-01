@@ -1,65 +1,154 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widget_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#09C"
+    android:layout_margin="@dimen/widget_margin"
+    android:background="@color/cardview_dark_background"
     android:orientation="vertical"
     android:padding="@dimen/widget_margin">
 
-    <GridLayout
-        android:rowCount="1"
-        android:columnCount="2"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="0"
-            android:layout_row="0"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/iv_podcast_image"
-                android:layout_width="160dp"
-                android:layout_height="100dp"
-                android:contentDescription="@string/widget_image_description" />
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/widget_iv_podcast_image"
+            android:layout_width="110dp"
+            android:layout_height="80dp"
+            android:layout_margin="@dimen/widget_margin"
+            android:contentDescription="@string/widget_image_description" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="2"
-            android:layout_column="1"
-            android:layout_row="0"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_podcast_title"
+                android:id="@+id/widget_tv_podcast_title"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                android:layout_height="0dp"
+                android:layout_gravity="start|clip_vertical"
                 android:layout_weight="1"
+                android:textColor="@color/colorPrimaryText"
                 android:textSize="16sp"
                 tools:text="@string/widget_title_tools_text" />
 
             <TextView
-                android:id="@+id/tv_podcast_author"
-                android:textSize="12sp"
+                android:id="@+id/widget_tv_podcast_channel"
                 android:layout_width="wrap_content"
-                android:layout_gravity="center|start"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="12sp"
                 tools:text="@string/widget_author_tools_text" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/exo_prev_button"
+                    android:layout_width="@dimen/playback_view_button_width"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/background_color_button"
+                    android:contentDescription="@string/exo_controls_previous_description"
+                    android:layout_marginEnd="@dimen/playback_view_player_margin"
+                    android:layout_marginRight="@dimen/playback_view_player_margin"
+                    android:layout_marginLeft="@dimen/playback_view_player_margin"
+                    android:layout_marginStart="@dimen/playback_view_player_margin"
+                    android:src="@drawable/exo_controls_previous" />
+
+                <ImageButton
+                    android:id="@+id/exo_play_button"
+                    android:layout_width="@dimen/playback_view_button_width"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/background_color_button"
+                    android:contentDescription="@string/exo_controls_play_description"
+                    android:layout_marginEnd="@dimen/playback_view_player_margin"
+                    android:layout_marginRight="@dimen/playback_view_player_margin"
+                    android:layout_marginLeft="@dimen/playback_view_player_margin"
+                    android:layout_marginStart="@dimen/playback_view_player_margin"
+                    android:src="@drawable/exo_controls_play" />
+
+                <ImageButton
+
+                    android:id="@+id/exo_pause_button"
+                    android:layout_width="@dimen/playback_view_button_width"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/background_color_button"
+                    android:contentDescription="@string/exo_controls_pause_description"
+                    android:layout_marginEnd="@dimen/playback_view_player_margin"
+                    android:layout_marginRight="@dimen/playback_view_player_margin"
+                    android:layout_marginLeft="@dimen/playback_view_player_margin"
+                    android:layout_marginStart="@dimen/playback_view_player_margin"
+                    android:src="@drawable/exo_controls_pause" />
+
+                <ImageButton
+                    android:id="@+id/exo_next_button"
+                    android:layout_width="@dimen/playback_view_button_width"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/background_color_button"
+                    android:contentDescription="@string/exo_controls_next_description"
+                    android:layout_marginEnd="@dimen/playback_view_player_margin"
+                    android:layout_marginRight="@dimen/playback_view_player_margin"
+                    android:layout_marginLeft="@dimen/playback_view_player_margin"
+                    android:layout_marginStart="@dimen/playback_view_player_margin"
+                    android:src="@drawable/exo_controls_next" />
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
+    </LinearLayout>
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="@dimen/show_player_control_linear_layout_top_pad"-->
+    <!--android:clickable="false"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:orientation="horizontal">-->
 
-    </GridLayout>
+    <!--<TextView-->
+    <!--android:id="@id/exo_position"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:clickable="false"-->
+    <!--android:includeFontPadding="false"-->
+    <!--android:paddingLeft="4dp"-->
+    <!--android:paddingRight="4dp"-->
+    <!--android:textColor="#FFBEBEBE"-->
+    <!--android:textSize="@dimen/show_player_control_time_pos_dur_text_size"-->
+    <!--android:textStyle="bold" />-->
 
-    <FrameLayout
-        android:id="@+id/player_frame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/podcast_list_item_card_margin"
-        android:background="@color/background_color_player_layout" />
+    <!--<SeekBar-->
+    <!--android:id="@id/exo_progress"-->
+    <!--style="?android:attr/progressBarStyleHorizontal"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="8dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:focusable="false" />-->
+
+    <!--<TextView-->
+    <!--android:id="@id/exo_duration"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:clickable="false"-->
+    <!--android:includeFontPadding="false"-->
+    <!--android:paddingLeft="4dp"-->
+    <!--android:paddingRight="4dp"-->
+    <!--android:textColor="#FFBEBEBE"-->
+    <!--android:textSize="@dimen/show_player_control_time_pos_dur_text_size"-->
+    <!--android:textStyle="bold" />-->
+
+    <!--</LinearLayout>-->
+
 </LinearLayout>
