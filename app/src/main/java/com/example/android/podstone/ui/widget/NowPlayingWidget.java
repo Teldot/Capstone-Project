@@ -1,7 +1,6 @@
 package com.example.android.podstone.ui.widget;
 
 import android.app.ActivityManager;
-import android.app.IntentService;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -11,21 +10,19 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.os.IBinder;
-import android.support.v4.app.FragmentManager;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.example.android.playerservicelib.data.MediaItem;
 import com.example.android.playerservicelib.service.MediaPlaybackService;
-import com.example.android.playerservicelib.ui.PlaybackViewFragment;
 import com.example.android.podstone.R;
-import com.example.android.podstone.ui.ShowActivity;
 import com.example.android.podstone.utils.NetworkUtils;
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -106,13 +103,12 @@ public class NowPlayingWidget extends AppWidgetProvider {
         }
     }
 
-    private static void initializePlayerService(final Context mContext, RemoteViews views, final AppWidgetManager appWidgetManager, final int appWidgetId) {
+    private static void initializePlayerService(final Context mContext, final RemoteViews views, final AppWidgetManager appWidgetManager, final int appWidgetId) {
         Intent intent = new Intent(mContext, MediaPlaybackService.class);
         final MediaPlaybackService[] mService = new MediaPlaybackService[1];
         final RemoteViews[] remoteViews = new RemoteViews[1];
         remoteViews[0] = views;
         ServiceConnection mConnection = new ServiceConnection() {
-
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 MediaPlaybackService.MediaPlaybackBinder binder = (MediaPlaybackService.MediaPlaybackBinder) service;
@@ -144,7 +140,8 @@ public class NowPlayingWidget extends AppWidgetProvider {
 
                     @Override
                     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-
+                        remoteViews[0] = setPlayPauseButtonsVisibility(remoteViews[0], mService[0]);
+                        appWidgetManager.updateAppWidget(appWidgetId, remoteViews[0]);
                     }
 
                     @Override
@@ -166,9 +163,7 @@ public class NowPlayingWidget extends AppWidgetProvider {
                     } else {
                         remoteViews[0] = loadData(null, remoteViews[0], mContext);
                     }
-//                mBound = true;
-                    //mListener.onBindService(mService[0]);
-//                setShowAlways(mShowAlways);
+                    remoteViews[0] = setPlayPauseButtonsVisibility(remoteViews[0], mService[0]);
                     appWidgetManager.updateAppWidget(appWidgetId, remoteViews[0]);
                 }
             }
@@ -180,11 +175,11 @@ public class NowPlayingWidget extends AppWidgetProvider {
             }
         };
         if (isMyServiceRunning(MediaPlaybackService.class, mContext)) {
-            //mContext.startService(intent);
-//            mContext.bindService(intent, mConnection, Context.BIND_WAIVE_PRIORITY);
             mContext.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-        } else
+        } else {
             remoteViews[0] = loadData(null, remoteViews[0], mContext);
+            remoteViews[0] = setPlayPauseButtonsVisibility(remoteViews[0], null);
+        }
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews[0]);
     }
 
@@ -207,6 +202,18 @@ public class NowPlayingWidget extends AppWidgetProvider {
             }
         } else views.setImageViewResource(R.id.widget_iv_podcast_image, R.drawable.ic_podcast);
 
+        return views;
+    }
+
+    private static RemoteViews setPlayPauseButtonsVisibility(RemoteViews views, MediaPlaybackService service) {
+        boolean playAction = true;
+        if (service != null) {
+            int playbackState = service.getmExoPlayer().getPlaybackState();
+            boolean playWhenReady = service.getmExoPlayer().getPlayWhenReady();
+            playAction = !(playWhenReady && playbackState == ExoPlayer.STATE_READY);
+        }
+        views.setViewVisibility(R.id.exo_play_button, playAction ? View.VISIBLE : View.GONE);
+        views.setViewVisibility(R.id.exo_pause_button, playAction ? View.GONE : View.VISIBLE);
         return views;
     }
 
