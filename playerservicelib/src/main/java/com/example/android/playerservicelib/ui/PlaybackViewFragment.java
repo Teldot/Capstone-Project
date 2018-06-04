@@ -262,7 +262,8 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
             mService.playPreviousMediaItem();
             loadData();
         } else if (i == R.id.exo_play) {
-            mService.playMediaItem();
+            //mService.playMediaItem();
+            mService.resumeMediaPlaying();
             loadData();
         } else if (i == R.id.exo_pause) {
             mService.pauseMediaPlaying();

@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.android.playerservicelib.data.MediaItem;
 import com.example.android.playerservicelib.service.MediaPlaybackService;
 import com.example.android.podstone.R;
+import com.example.android.podstone.ui.ShowActivity;
 import com.example.android.podstone.utils.NetworkUtils;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -40,6 +41,8 @@ public class NowPlayingWidget extends AppWidgetProvider {
 
     private static final String K_SHOW = "K_SHOW";
     private static MediaItem Show;
+    private static final MediaPlaybackService[] mService = new MediaPlaybackService[1];
+
 
     private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                         int appWidgetId) {
@@ -66,10 +69,10 @@ public class NowPlayingWidget extends AppWidgetProvider {
         actionPendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.exo_play_button, actionPendingIntent);
 
-//        intent = new Intent(context, NowPlayingWidget.class);
-//        intent.setAction(APPWIDGET_UPDATE);
-//        actionPendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-//        views.setOnClickPendingIntent(R.id.widget_container, actionPendingIntent);
+        intent = new Intent(context, NowPlayingWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        actionPendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        views.setOnClickPendingIntent(R.id.widget_container, actionPendingIntent);
 
         initializePlayerService(context.getApplicationContext(), views, appWidgetManager, appWidgetId);
 
@@ -79,33 +82,42 @@ public class NowPlayingWidget extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (mService[0] == null) return;
         final String action = intent.getAction();
 
         switch (action) {
             case ACTION_PREV:
+                mService[0].playPreviousMediaItem();
                 Toast.makeText(context, action, Toast.LENGTH_LONG).show();
                 break;
             case ACTION_NEXT:
+                mService[0].playNextMediaItem();
                 Toast.makeText(context, action, Toast.LENGTH_LONG).show();
-
                 break;
             case ACTION_PLAY:
+                mService[0].resumeMediaPlaying();
                 Toast.makeText(context, action, Toast.LENGTH_LONG).show();
                 break;
             case ACTION_PAUSE:
+                mService[0].pauseMediaPlaying();
                 Toast.makeText(context, action, Toast.LENGTH_LONG).show();
                 break;
             default:
-                super.onReceive(context, intent);
-                Toast.makeText(context, "No valid action", Toast.LENGTH_LONG).show();
-
+                if (mService[0].getMediaItems() != null) {
+                    int idx = mService[0].getCurrentMediaItemIndex();
+                    Intent openIntent = new Intent(context, ShowActivity.class);
+                    MediaItem mediaItem = mService[0].getMediaItems()[idx];
+                    openIntent.putExtra(K_SHOW, mediaItem);
+                    context.startActivity(openIntent);
+                }
+                Toast.makeText(context, "Other action", Toast.LENGTH_LONG).show();
                 break;
         }
+        super.onReceive(context, intent);
     }
 
     private static void initializePlayerService(final Context mContext, final RemoteViews views, final AppWidgetManager appWidgetManager, final int appWidgetId) {
         Intent intent = new Intent(mContext, MediaPlaybackService.class);
-        final MediaPlaybackService[] mService = new MediaPlaybackService[1];
         final RemoteViews[] remoteViews = new RemoteViews[1];
         remoteViews[0] = views;
         ServiceConnection mConnection = new ServiceConnection() {

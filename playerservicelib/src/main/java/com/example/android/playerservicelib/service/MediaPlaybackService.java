@@ -254,6 +254,14 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
         }
     }
 
+    public void resumeMediaPlaying() {
+        if (mediaItems == null || mediaItems.length == 0) return;
+
+        if (mExoPlayer.getPlaybackState() == ExoPlayer.STATE_READY) {
+            mExoPlayer.setPlayWhenReady(true);
+        }
+    }
+
     public void playNextMediaItem() {
         if (mediaItems == null || mediaItems.length == 0) return;
 
