@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.android.playerservicelib.data.MediaItem;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -31,6 +32,7 @@ import java.util.List;
 
 
 public class MediaPlaybackService extends Service implements ExoPlayer.EventListener {
+    private static final String TAG = MediaPlaybackService.class.getSimpleName();
     public static final int INITIAL_INDEX = -1;
 
     private MediaItem[] mediaItems;
@@ -229,6 +231,7 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
         if (mediaItemIndex == INITIAL_INDEX && mediaItems != null && mediaItems.length > 0)
             mediaItemIndex++;
 
+        Log.i(TAG, mediaItems[mediaItemIndex].MediaUri);
         Uri uri = Uri.parse(mediaItems[mediaItemIndex].MediaUri).buildUpon().build();
         userAgent = Util.getUserAgent(this, this.getApplicationInfo().name);
         MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(

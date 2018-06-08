@@ -5,21 +5,25 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.android.playerservicelib.R;
 import com.example.android.playerservicelib.data.MediaItem;
 import com.example.android.playerservicelib.service.MediaPlaybackService;
+import com.example.android.playerservicelib.utils.NetUtils;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
@@ -28,10 +32,14 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 
 public class PlaybackViewFragment extends Fragment implements MediaPlaybackService.MediaPlaybackServiceEventHandler, SimpleExoPlayerView.OnClickListener {
+    private static final String TAG = PlaybackViewFragment.class.getSimpleName();
+
     public static final String K_SHOW_TITLE = "K_SHOW_TITLE";
     public static final String K_SHOW_CHANNEL = "K_SHOW_CHANNEL";
     public static final String K_SHOW_URL = "K_SHOW_URL";
@@ -56,6 +64,7 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
     private ImageButton buttonNext;
     private TextView tvTitle;
     private TextView tvAuthor;
+    private ImageView ivShowImage;
     private View generalView;
     private Intent openIntent;
     private LinearLayout mainPlayerControlsContainer;
@@ -118,7 +127,7 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
             public void onVisibilityChange(int visibility) {
                 if (visibility != PlaybackControlView.VISIBLE) {
 //                        playerView.setUseController(true);
-                   playerView.showController();
+                    playerView.showController();
 //                    playerView.refreshDrawableState();
                     playerView.setVisibility(View.VISIBLE);
                 }
@@ -132,6 +141,7 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
         });
         tvTitle = playerView.findViewById(R.id.text_title);
         tvAuthor = playerView.findViewById(R.id.text_author);
+        ivShowImage = playerView.findViewById(R.id.track_image);
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(K_PLAYER_POS))
                 mPlayerPos = savedInstanceState.getLong(K_PLAYER_POS);
@@ -192,6 +202,21 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
                 mMediaItem = mService.getMediaItems()[mMediaItemPos];
                 tvTitle.setText(mMediaItem.Title);
                 tvAuthor.setText(mMediaItem.Channel);
+                if (mMediaItem.ImgUri != null && mMediaItem.ImgUri.length() > 0) {
+                    Log.i(TAG, mMediaItem.ImgUri);
+                    try {
+                        URL url = new URL(mMediaItem.ImgUri);
+                        Bitmap bitmap = NetUtils.loadImgFrom(url, getContext());
+                        ivShowImage.setImageBitmap(bitmap);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage());
+                        ivShowImage.setImageResource(R.drawable.ic_podcast_not);
+                    }
+                } else {
+                    ivShowImage.setImageResource(R.drawable.ic_podcast_not);
+                    Log.i(TAG, "No image available");
+                }
             }
         }
     }

@@ -36,13 +36,11 @@ public class NowPlayingWidget extends AppWidgetProvider {
     public static final String ACTION_NEXT = ".ui.widget.NowPlayingWidget.ACTION_NEXT";
     public static final String ACTION_PLAY = ".ui.widget.NowPlayingWidget.ACTION_PLAY";
     public static final String ACTION_PAUSE = ".ui.widget.NowPlayingWidget.ACTION_PAUSE";
-    //public static final String APPWIDGET_UPDATE = "APPWIDGET_UPDATE";
 
 
     private static final String K_SHOW = "K_SHOW";
     private static MediaItem Show;
     private static final MediaPlaybackService[] mService = new MediaPlaybackService[1];
-
 
     private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                         int appWidgetId) {
@@ -88,19 +86,15 @@ public class NowPlayingWidget extends AppWidgetProvider {
         switch (action) {
             case ACTION_PREV:
                 mService[0].playPreviousMediaItem();
-                Toast.makeText(context, action, Toast.LENGTH_LONG).show();
                 break;
             case ACTION_NEXT:
                 mService[0].playNextMediaItem();
-                Toast.makeText(context, action, Toast.LENGTH_LONG).show();
                 break;
             case ACTION_PLAY:
                 mService[0].resumeMediaPlaying();
-                Toast.makeText(context, action, Toast.LENGTH_LONG).show();
                 break;
             case ACTION_PAUSE:
                 mService[0].pauseMediaPlaying();
-                Toast.makeText(context, action, Toast.LENGTH_LONG).show();
                 break;
             default:
                 if (mService[0].getMediaItems() != null) {
@@ -110,7 +104,6 @@ public class NowPlayingWidget extends AppWidgetProvider {
                     openIntent.putExtra(K_SHOW, mediaItem);
                     context.startActivity(openIntent);
                 }
-                Toast.makeText(context, "Other action", Toast.LENGTH_LONG).show();
                 break;
         }
         super.onReceive(context, intent);
@@ -169,7 +162,7 @@ public class NowPlayingWidget extends AppWidgetProvider {
 
                 if (mService[0] != null) {
                     MediaItem[] mediaItems = mService[0].getMediaItems();
-                    if (mediaItems.length > 0) {
+                    if (mediaItems != null && mediaItems.length > 0) {
                         int currentMediaItem = mService[0].getCurrentMediaItemIndex();
                         remoteViews[0] = loadData(mediaItems[currentMediaItem], remoteViews[0], mContext);
                     } else {

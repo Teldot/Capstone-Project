@@ -176,9 +176,11 @@ public class FetchDataTask extends AsyncTask {
 
         MediaItem show = new MediaItem();
         try {
-            show.Author = showObject.getString(SHOW_AUTHOR);
+            String author = showObject.getString(SHOW_AUTHOR);
+            show.Author = (author == null || author == "null") ? "" : author;
             show.Description = showObject.getString(SHOW_DESCRIPTION);
             if (showObject.has(SHOW_IMAGE)) {
+                Log.i(TAG, "Has Image");
                 show.ImgUri = showObject.getString(SHOW_IMAGE);
                 if (show.ImgUri != null && show.ImgUri.length() > 0) {
                     URL url = new URL(show.ImgUri);

@@ -66,9 +66,10 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
         });
 
         if (savedInstanceState != null) {
+            listState = savedInstanceState.getParcelable(K_RECYCLEDVIEW_STATE);
+            searchQuery = savedInstanceState.getString(K_SEARCH_QUERY);
             searchResult = (SearchResult) savedInstanceState.getSerializable(K_SEARCH_RESULT);
             FETCHDATA_TASK = savedInstanceState.getInt(K_FETCHDATA_TASK);
-            searchQuery = savedInstanceState.getString(K_SEARCH_QUERY);
         } else {
             FETCHDATA_TASK = FetchDataTask.TASK_STARTUP_LIST;
         }
@@ -111,6 +112,17 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
         outState.putParcelable(K_RECYCLEDVIEW_STATE, listState);
 
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            listState = savedInstanceState.getParcelable(K_RECYCLEDVIEW_STATE);
+            searchQuery = savedInstanceState.getString(K_SEARCH_QUERY);
+            searchResult = (SearchResult) savedInstanceState.getSerializable(K_SEARCH_RESULT);
+            FETCHDATA_TASK = savedInstanceState.getInt(K_FETCHDATA_TASK);
+        }
     }
 
     @Override

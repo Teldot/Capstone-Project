@@ -7,14 +7,20 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import android.os.Build;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
+import android.util.Xml;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +33,7 @@ import com.example.android.podstone.data.provider.ShowContentProvider;
 import com.example.android.podstone.data.provider.ShowContract;
 import com.example.android.podstone.ui.widget.PlayerWidgetService;
 import com.example.android.podstone.utils.NetworkUtils;
+import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 
 public class ShowActivity extends AppCompatActivity implements PlaybackViewFragment.OnFragmentInteractionListener {
@@ -46,7 +53,8 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
     private TextView tvShowName;
     private TextView tvAuthor;
     private TextView tvCopyright;
-    private TextView tvDescription;
+    //private TextView tvDescription;
+    private WebView tvDescription;
     private ImageButton ibFavIcon;
     private PlaybackViewFragment playbackViewFragment;
     private MediaPlaybackService mService;
@@ -67,6 +75,7 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
         tvAuthor = findViewById(R.id.tv_show_author);
         tvShowName = findViewById(R.id.tv_show_name);
         tvCopyright = findViewById(R.id.tv_show_copyright);
+        //tvDescription = findViewById(R.id.tv_show_description);
         tvDescription = findViewById(R.id.tv_show_description);
         //showPlayerView = findViewById(R.id.show_player);
         ibFavIcon = findViewById(R.id.favorite_icon);
@@ -102,11 +111,19 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
         tvAuthor.setText(mShow.Author);
         tvShowName.setText(mShow.Title);
         tvCopyright.setText(mShow.Copyright);
-        tvDescription.setText(mShow.Description);
-        if (mShow.Image != null && mShow.Image.length > 0) {
-            Bitmap img = NetworkUtils.getImageFromBytes(mShow.Image);
-            //showPlayerView.setDefaultArtwork(img);
-        }
+        tvDescription.loadData(mShow.Description, null, null);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//
+//            tvDescription.setText(Html.fromHtml(convertToHtml(mShow.Description), Html.FROM_HTML_MODE_LEGACY));
+//        } else {
+//            tvDescription.setText(Html.fromHtml(mShow.Description));
+//        }
+//        tvDescription.setText(mShow.Description);
+
+//        if (mShow.Image != null && mShow.Image.length > 0) {
+////            Bitmap img = NetworkUtils.getImageFromBytes(mShow.Image);
+////            showPlayerView.setDefaultArtwork(img);
+////        }
         if (mShow.IsInDb)
             ibFavIcon.setImageResource(R.drawable.ic_star_black_24dp);
         else
@@ -262,81 +279,83 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
 //        }
 //    }
 
-    private void showNotification(PlaybackStateCompat state) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-
-        int icon;
-        String play_pause;
-        long action;
-        if (state.getState() == PlaybackStateCompat.STATE_PLAYING) {
-            icon = R.drawable.exo_controls_pause;
-            play_pause = getString(R.string.exo_controls_pause_description);
-            action = PlaybackStateCompat.ACTION_PAUSE;
-        } else {
-            icon = R.drawable.exo_controls_play;
-            play_pause = getString(R.string.exo_controls_play_description);
-            action = PlaybackStateCompat.ACTION_PLAY;
-        }
-
-        NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
-                icon, play_pause,
-                MediaButtonReceiver.buildMediaButtonPendingIntent(this, action));
-
-        NotificationCompat.Action rewindAction = new NotificationCompat.Action(
-                R.drawable.exo_controls_rewind, getString(R.string.exo_controls_rewind_description),
-                MediaButtonReceiver.buildMediaButtonPendingIntent
-                        (this, PlaybackStateCompat.ACTION_REWIND));
-
-        NotificationCompat.Action fastforwardAction = new NotificationCompat.Action(
-                R.drawable.exo_controls_fastforward, getString(R.string.exo_controls_fastforward_description),
-                MediaButtonReceiver.buildMediaButtonPendingIntent
-                        (this, PlaybackStateCompat.ACTION_FAST_FORWARD));
-
-
-        PendingIntent contentPendingIntent = PendingIntent.getActivity
-                (this, 0, new Intent(this, ShowActivity.class), 0);
-
-        builder.setContentTitle(mShow.Title)
-                .setContentText(mShow.Channel)
-                .setContentIntent(contentPendingIntent)
-                .setSmallIcon(R.drawable.ic_podcast_not)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .addAction(rewindAction)
-                .addAction(playPauseAction)
-                .addAction(fastforwardAction);
-//                .setStyle(new MediaStyle()
-//                        .setMediaSession(mMediaSession.getSessionToken())
-//                        .setShowActionsInCompactView(0, 1));
-
-
-        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mNotificationManager.notify(NOTIFICATION_ID, builder.build());
-    }
-
-//    @Override
-//    public void onTaskComplete(Object result, int task) {
-//        mShow = (Show) result;
-//        loadData();
-//    }
+//    private void showNotification(PlaybackStateCompat state) {
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 //
-//    @Override
-//    public void onPreExecute() {
+//        int icon;
+//        String play_pause;
+//        long action;
+//        if (state.getState() == PlaybackStateCompat.STATE_PLAYING) {
+//            icon = R.drawable.exo_controls_pause;
+//            play_pause = getString(R.string.exo_controls_pause_description);
+//            action = PlaybackStateCompat.ACTION_PAUSE;
+//        } else {
+//            icon = R.drawable.exo_controls_play;
+//            play_pause = getString(R.string.exo_controls_play_description);
+//            action = PlaybackStateCompat.ACTION_PLAY;
+//        }
 //
+//        NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
+//                icon, play_pause,
+//                MediaButtonReceiver.buildMediaButtonPendingIntent(this, action));
+//
+//        NotificationCompat.Action rewindAction = new NotificationCompat.Action(
+//                R.drawable.exo_controls_rewind, getString(R.string.exo_controls_rewind_description),
+//                MediaButtonReceiver.buildMediaButtonPendingIntent
+//                        (this, PlaybackStateCompat.ACTION_REWIND));
+//
+//        NotificationCompat.Action fastforwardAction = new NotificationCompat.Action(
+//                R.drawable.exo_controls_fastforward, getString(R.string.exo_controls_fastforward_description),
+//                MediaButtonReceiver.buildMediaButtonPendingIntent
+//                        (this, PlaybackStateCompat.ACTION_FAST_FORWARD));
+//
+//
+//        PendingIntent contentPendingIntent = PendingIntent.getActivity
+//                (this, 0, new Intent(this, ShowActivity.class), 0);
+//
+//        builder.setContentTitle(mShow.Title)
+//                .setContentText(mShow.Channel)
+//                .setContentIntent(contentPendingIntent)
+//                .setSmallIcon(R.drawable.ic_podcast_not)
+//                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+//                .addAction(rewindAction)
+//                .addAction(playPauseAction)
+//                .addAction(fastforwardAction);
+////                .setStyle(new MediaStyle()
+////                        .setMediaSession(mMediaSession.getSessionToken())
+////                        .setShowActionsInCompactView(0, 1));
+//
+//
+//        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//        mNotificationManager.notify(NOTIFICATION_ID, builder.build());
 //    }
 
-    public void onFabButClick(View view) {
-        ImageButton b = (ImageButton) view;
-        if (mShow.IsInDb) {
-            if (deleteShow(mShow.ShowId)) {
-                b.setImageResource(R.drawable.ic_star_border_black_24dp);
-                mShow.IsInDb = false;
+    public void onButtonClick(View view) {
+        if (view.getId() == R.id.favorite_icon) {
+            ImageButton b = (ImageButton) view;
+            if (mShow.IsInDb) {
+                if (deleteShow(mShow.ShowId)) {
+                    b.setImageResource(R.drawable.ic_star_border_black_24dp);
+                    mShow.IsInDb = false;
+                }
+            } else {
+                deleteShow(mShow.ShowId);
+                if (saveFavorite()) {
+                    b.setImageResource(R.drawable.ic_star_black_24dp);
+                    mShow.IsInDb = true;
+                }
             }
-        } else {
-            deleteShow(mShow.ShowId);
-            if (saveFavorite()) {
-                b.setImageResource(R.drawable.ic_star_black_24dp);
-                mShow.IsInDb = true;
+        } else if (view.getId() == R.id.share_fab) {
+            Spanned shareMess;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                shareMess = Html.fromHtml(mShow.getShareString(), Html.FROM_HTML_MODE_LEGACY);
+            } else {
+                shareMess = Html.fromHtml(mShow.getShareString());
             }
+            startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(this)
+                    .setType("text/plain")
+                    .setText(shareMess)
+                    .getIntent(), getString(R.string.action_share)));
         }
     }
 

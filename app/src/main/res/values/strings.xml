@@ -37,6 +37,7 @@
     <string name="tools_text_tv_show_author">Author</string>
     <string name="tools_text_tv_show_copyright">Copyright</string>
     <string name="tools_text_tv_show_votes">(50)</string>
+    <string name="action_share">Share</string>
 
     <!--FAVORITES ACTIVITY-->
     <string name="fav_act_toolbar_title">Favorites Play List</string>

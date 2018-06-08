@@ -87,7 +87,7 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadData();
+                remapChannelData();
             }
         });
 
@@ -98,8 +98,6 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
             ViewGroup playbackControlContainer = findViewById(R.id.player_frame);
             playbackViewFragment = new PlaybackViewFragment();
             playbackViewFragment.setShowAlways(false);
-//            Bundle bundle = new Bundle();
-//            playbackViewFragment.setArguments(bundle);
             Intent openIntent = new Intent(this, ShowActivity.class);
             playbackViewFragment.setOpenIntent(openIntent);
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -108,11 +106,12 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
                     .commit();
         } else {
             mChannel = (Channel) savedInstanceState.getSerializable(K_CHANNEL);
-            loadData();
+//            remapChannelData();
             playbackViewFragment = (PlaybackViewFragment) getSupportFragmentManager().findFragmentByTag(PlaybackViewFragment.class.getName());
         }
 
     }
+
 
     private void loadChannelData(long channelId) {
         mSwipeRefreshLayout.setRefreshing(true);
@@ -130,6 +129,15 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            listState = savedInstanceState.getParcelable(K_RECYCLEDVIEW_STATE);
+            mChannel = (Channel) savedInstanceState.getSerializable(K_CHANNEL);
+        }
+    }
+
     private void loadData() {
         if (mChannel.Image != null)
             ivChannelImage.setImageBitmap(NetworkUtils.getImageFromBytes(mChannel.Image));
@@ -141,9 +149,7 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    @Override
-    public void onTaskComplete(Object result, int task) {
-        mChannel = (Channel) result;
+    private void remapChannelData() {
         if (mChannel != null) {
             checkShowsInDb();
             loadData();
@@ -152,6 +158,18 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
                 layoutManager.onRestoreInstanceState(listState);
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        remapChannelData();
+    }
+
+    @Override
+    public void onTaskComplete(Object result, int task) {
+        mChannel = (Channel) result;
+        remapChannelData();
     }
 
     @Override
@@ -166,6 +184,7 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
         String[] ids = new String[mChannel.Shows.length];
         String selection = ShowContract.ShowEntry._ID + " IN (";
         for (int i = 0; i < mChannel.Shows.length; i++) {
+            mChannel.Shows[i].IsInDb = false;
             idsPos.put(mChannel.Shows[i].ShowId, i);
             ids[i] = String.valueOf(mChannel.Shows[i].ShowId);
             selection += "?,";
@@ -185,8 +204,6 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
             }
             while (c.moveToNext());
         }
-
-
     }
 
     @Override
@@ -235,7 +252,6 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
 
     private boolean saveFavorite(MediaItem podcast) {
         Uri uri = ShowContentProvider.getUri(ShowContentProvider.SHOWS, String.valueOf(ShowContentProvider.NO_SHOW_ID));
-        //Uri uri = ShowContract.ShowEntry.CONTENT_URI;
         ContentValues values = new ContentValues();
         values.put(ShowContract.ShowEntry._ID, podcast.ShowId);
         values.put(ShowContract.ShowEntry.COLUMN_TITLE, podcast.Title);
