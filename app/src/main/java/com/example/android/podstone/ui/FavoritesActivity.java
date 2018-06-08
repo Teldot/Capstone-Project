@@ -27,6 +27,8 @@ import android.widget.Toast;
 import com.example.android.playerservicelib.data.MediaItem;
 import com.example.android.podstone.R;
 import com.example.android.podstone.data.provider.ShowContentProvider;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class FavoritesActivity extends AppCompatActivity implements ShowListAdapter.ShowListItemIconOnClick, ShowListAdapter.ShowsListAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = FavoritesActivity.class.getSimpleName();
@@ -42,6 +44,7 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
     private Parcelable listState;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,10 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
         layoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.shows_list_column_items));
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

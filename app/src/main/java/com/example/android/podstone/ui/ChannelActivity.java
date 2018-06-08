@@ -30,6 +30,8 @@ import com.example.android.podstone.data.provider.ShowContentProvider;
 import com.example.android.podstone.data.provider.ShowContract;
 import com.example.android.podstone.utils.FetchDataTask;
 import com.example.android.podstone.utils.NetworkUtils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.HashMap;
 
@@ -53,6 +55,7 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private PlaybackViewFragment playbackViewFragment;
+    private AdView mAdView;
 
     private MediaPlaybackService mService;
 
@@ -90,6 +93,10 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
                 remapChannelData();
             }
         });
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         if (savedInstanceState == null) {
             long channelId = getIntent().getLongExtra(K_CHANNEL_ID, 0);

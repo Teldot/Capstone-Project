@@ -22,6 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
                 android:background="@color/colorPrimary"
+                android:elevation="6dp"
                 android:minHeight="?android:attr/actionBarSize"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:layout_constraintTop_toTopOf="parent"
@@ -48,8 +49,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/podcast_list_item_margin"
-                    android:contentDescription="@string/activity_channel_iv_image_content_dec"
-                    android:src="@drawable/ic_action_headphones" />
+                    android:src="@drawable/ic_action_headphones"
+                    android:contentDescription="@string/activity_channel_iv_image_content_dec" />
 
                 <LinearLayout
                     android:id="@+id/activity_channel_rate_container"
@@ -64,6 +65,7 @@
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:progressTint="@color/colorAccent"
                         tools:rating="@string/activity_channel_rating" />
 
                     <TextView

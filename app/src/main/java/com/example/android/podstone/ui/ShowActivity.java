@@ -35,6 +35,8 @@ import com.example.android.podstone.ui.widget.PlayerWidgetService;
 import com.example.android.podstone.utils.NetworkUtils;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class ShowActivity extends AppCompatActivity implements PlaybackViewFragment.OnFragmentInteractionListener {
 
@@ -58,6 +60,7 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
     private ImageButton ibFavIcon;
     private PlaybackViewFragment playbackViewFragment;
     private MediaPlaybackService mService;
+    private AdView mAdView;
 
     private NotificationManager mNotificationManager;
     //    private PlaybackStateCompat.Builder mStateBuilder;
@@ -75,10 +78,11 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
         tvAuthor = findViewById(R.id.tv_show_author);
         tvShowName = findViewById(R.id.tv_show_name);
         tvCopyright = findViewById(R.id.tv_show_copyright);
-        //tvDescription = findViewById(R.id.tv_show_description);
         tvDescription = findViewById(R.id.tv_show_description);
-        //showPlayerView = findViewById(R.id.show_player);
         ibFavIcon = findViewById(R.id.favorite_icon);
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
 
         if (savedInstanceState != null) {
@@ -89,7 +93,6 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
 
             playbackViewFragment = (PlaybackViewFragment) getSupportFragmentManager().findFragmentByTag(PlaybackViewFragment.class.getName());
         } else {
-            //mShowId = getIntent().getLongExtra(K_SHOW_ID, 0);
             mShow = (MediaItem) getIntent().getSerializableExtra(K_SHOW);
             forceNewPlaying = getIntent().getBooleanExtra(K_FORCE_NEW_PLAYING, false);
             //loadShowData();
@@ -112,18 +115,7 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
         tvShowName.setText(mShow.Title);
         tvCopyright.setText(mShow.Copyright);
         tvDescription.loadData(mShow.Description, null, null);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//
-//            tvDescription.setText(Html.fromHtml(convertToHtml(mShow.Description), Html.FROM_HTML_MODE_LEGACY));
-//        } else {
-//            tvDescription.setText(Html.fromHtml(mShow.Description));
-//        }
-//        tvDescription.setText(mShow.Description);
 
-//        if (mShow.Image != null && mShow.Image.length > 0) {
-////            Bitmap img = NetworkUtils.getImageFromBytes(mShow.Image);
-////            showPlayerView.setDefaultArtwork(img);
-////        }
         if (mShow.IsInDb)
             ibFavIcon.setImageResource(R.drawable.ic_star_black_24dp);
         else

@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.playerservicelib.R;
 import com.example.android.playerservicelib.data.MediaItem;
@@ -398,7 +399,19 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
 
     @Override
     public void onPlayerError(ExoPlaybackException error) {
-
+        String mess;
+        switch (error.type) {
+            case ExoPlaybackException.TYPE_RENDERER:
+                mess = getString(R.string.playbackviewfragment_error_type_render_mess);
+                break;
+            case ExoPlaybackException.TYPE_SOURCE:
+                mess = getString(R.string.playbackviewfragment_error_type_source_mess);
+                break;
+            default:
+                mess = getString(R.string.playbackviewfragment_error_type_default_mess);
+                break;
+        }
+        Toast.makeText(getContext(), mess, Toast.LENGTH_LONG).show();
     }
 
     @Override

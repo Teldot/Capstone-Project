@@ -2,4 +2,7 @@
     <string name="app_name">PlayerServiceLib</string>
     <string name="playback_view_tools_text">This is the name of the media</string>
     <string name="playback_view_image_desc">Show Image</string>
+    <string name="playbackviewfragment_error_type_render_mess">An error occurred loading data from the source</string>
+    <string name="playbackviewfragment_error_type_source_mess">An error occurred rendering the media</string>
+    <string name="playbackviewfragment_error_type_default_mess">An unexpected error occurred</string>
 </resources>

@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">PodStone</string>
 
+    <!--ADS BANNER-->
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
     <!--MAIN ACTIVITY-->
     <string name="main_activity_text_result">Results for: \'%s\'</string>
 
@@ -93,5 +96,7 @@
     <string name="widget_image_description">Played Podcast Image</string>
     <string name="widget_title_tools_text">Podcast Title</string>
     <string name="widget_author_tools_text">Podcast Author</string>
+    <string name="show_activity_fav_icon_content_desc">Set on/off as favorite podcast</string>
+    <string name="activity_channel_iv_image_content_dec">Channel Image</string>
 
 </resources>

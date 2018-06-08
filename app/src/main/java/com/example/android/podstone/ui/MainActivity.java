@@ -20,6 +20,8 @@ import com.example.android.podstone.data.entities.Channel;
 import com.example.android.podstone.data.entities.SearchResult;
 import com.example.android.podstone.ui.widget.PlayerWidgetService;
 import com.example.android.podstone.utils.FetchDataTask;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class MainActivity extends AppCompatActivity implements ChannelsListAdapter.ChannelsListAdapterOnClickHandler, FetchDataTask.AsyncTaskCompleteListener {
     private Toolbar toolbar;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
     private TextView tvSearchResults;
     private int FETCHDATA_TASK;
     private Parcelable listState;
+    private AdView mAdView;
 
     private static final String K_SEARCH_RESULT = "K_SEARCH_RESULT";
     private static final String K_SEARCH_QUERY = "K_SEARCH_QUERY";
@@ -64,6 +67,10 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
                 loadPodcasts(null);
             }
         });
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         if (savedInstanceState != null) {
             listState = savedInstanceState.getParcelable(K_RECYCLEDVIEW_STATE);
