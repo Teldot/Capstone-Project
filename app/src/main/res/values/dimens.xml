@@ -15,6 +15,8 @@
     <integer name="shows_list_column_items">1</integer>
     <integer name="seek_time_in_secs">5</integer>
 
+    <integer name="search_toolbar_max_query_length">20</integer>
+
     <!--SHOW CONTROLS DIMEN-->
     <dimen name="show_name_text_size">24sp</dimen>
     <dimen name="show_channel_text_size">18sp</dimen>
@@ -24,9 +26,7 @@
     <dimen name="show_player_control_button_width">80dp</dimen>
     <dimen name="show_player_control_linear_layout_top_pad">4dp</dimen>
 
-    <!--
-Refer to App Widget Documentation for margin information
-http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
-    -->
     <dimen name="widget_margin">8dp</dimen>
+
+
 </resources>

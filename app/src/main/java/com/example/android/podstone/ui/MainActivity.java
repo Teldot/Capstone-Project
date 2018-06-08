@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.example.android.podstone.R;
 import com.example.android.podstone.data.entities.Channel;
 import com.example.android.podstone.data.entities.SearchResult;
@@ -47,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //FORCE A CRASH
+//        Crashlytics.getInstance().crash();
+
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         toolbar = findViewById(R.id.search_toolbar);
         setSupportActionBar(toolbar);
@@ -64,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadPodcasts(null);
+                loadPodcasts(searchQuery);
             }
         });
 
@@ -172,6 +176,9 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                if (query.length() > getResources().getInteger(R.integer.search_toolbar_max_query_length)) {
+                    query = query.substring(0, getResources().getInteger(R.integer.search_toolbar_max_query_length));
+                }
                 mSwipeRefreshLayout.setRefreshing(true);
                 loadPodcasts(query);
                 searchView.clearFocus();
