@@ -5,4 +5,8 @@
     <string name="playbackviewfragment_error_type_render_mess">An error occurred loading data from the source</string>
     <string name="playbackviewfragment_error_type_source_mess">An error occurred rendering the media</string>
     <string name="playbackviewfragment_error_type_default_mess">An unexpected error occurred</string>
+    <string name="exoplayback_control_back_to_playing_now_button_content_desc">Back to \'Playing Now? screen</string>
+    <string name="now_playing_class_name_0">ShowActivity</string>
+    <string name="now_playing_class_name_1">FavoritesActivity</string>
+    <string name="template_song_number_on_list">(%d/%d)</string>
 </resources>
