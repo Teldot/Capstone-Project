@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.example.android.playerservicelib.data.MediaItem;
 import com.example.android.playerservicelib.service.MediaPlaybackService;
 import com.example.android.podstone.R;
+import com.example.android.podstone.ui.FavoritesActivity;
+import com.example.android.podstone.ui.MainActivity;
 import com.example.android.podstone.ui.ShowActivity;
 import com.example.android.podstone.utils.NetworkUtils;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -70,6 +72,7 @@ public class NowPlayingWidget extends AppWidgetProvider {
         intent = new Intent(context, NowPlayingWidget.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         actionPendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        views.setOnClickPendingIntent(R.id.ib_open_np_screen, actionPendingIntent);
         views.setOnClickPendingIntent(R.id.widget_container, actionPendingIntent);
 
         initializePlayerService(context.getApplicationContext(), views, appWidgetManager, appWidgetId);
@@ -80,9 +83,13 @@ public class NowPlayingWidget extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (mService[0] == null) return;
-        final String action = intent.getAction();
 
+        if (mService[0] == null) {
+            Intent oIntent = new Intent(context, MainActivity.class);
+            context.startActivity(oIntent);
+            return;
+        }
+        final String action = intent.getAction();
         switch (action) {
             case ACTION_PREV:
                 mService[0].playPreviousMediaItem();
@@ -97,13 +104,21 @@ public class NowPlayingWidget extends AppWidgetProvider {
                 mService[0].pauseMediaPlaying();
                 break;
             default:
-                if (mService[0].getMediaItems() != null) {
-                    int idx = mService[0].getCurrentMediaItemIndex();
-                    Intent openIntent = new Intent(context, ShowActivity.class);
-                    MediaItem mediaItem = mService[0].getMediaItems()[idx];
-                    openIntent.putExtra(K_SHOW, mediaItem);
-                    context.startActivity(openIntent);
+                Intent openIntent;
+                if (mService[0].getMediaItems() != null && mService[0].getMediaItems().length > 0) {
+                    if (mService[0].getMediaItems().length == 1) {
+                        int idx = 0;
+                        openIntent = new Intent(context, ShowActivity.class);
+                        MediaItem mediaItem = mService[0].getMediaItems()[idx];
+                        openIntent.putExtra(K_SHOW, mediaItem);
+                    } else {
+                        openIntent = new Intent(context, FavoritesActivity.class);
+                    }
+
+                } else {
+                    openIntent = new Intent(context, MainActivity.class);
                 }
+                context.startActivity(openIntent);
                 break;
         }
         super.onReceive(context, intent);
@@ -178,6 +193,12 @@ public class NowPlayingWidget extends AppWidgetProvider {
                 remoteViews[0] = loadData(null, remoteViews[0], mContext);
                 appWidgetManager.updateAppWidget(appWidgetId, remoteViews[0]);
             }
+
+            @Override
+            public void onBindingDied(ComponentName name) {
+                remoteViews[0] = loadData(null, remoteViews[0], mContext);
+                appWidgetManager.updateAppWidget(appWidgetId, remoteViews[0]);
+            }
         };
         if (isMyServiceRunning(MediaPlaybackService.class, mContext)) {
             mContext.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
@@ -193,10 +214,17 @@ public class NowPlayingWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.widget_tv_podcast_title, mContext.getText(R.string.app_name));
             views.setTextViewText(R.id.widget_tv_podcast_channel, "");
             views.setImageViewResource(R.id.widget_iv_podcast_image, R.drawable.ic_podcast);
+            views.setTextViewText(R.id.tv_song_number_on_list, "");
             return views;
         }
         views.setTextViewText(R.id.widget_tv_podcast_title, mediaItem.Title);
         views.setTextViewText(R.id.widget_tv_podcast_channel, mediaItem.Channel);
+        if (mService != null) {
+            int mediaIndx = mService[0].getCurrentMediaItemIndex() + 1;
+            int totalMedia = mService[0].getMediaItems().length;
+            views.setTextViewText(R.id.tv_song_number_on_list,
+                    String.format(mContext.getString(R.string.template_song_number_on_list), mediaIndx, totalMedia));
+        }
         if (mediaItem.ImgUri != null) {
             try {
                 URL url = new URL(mediaItem.ImgUri);

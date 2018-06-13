@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/widget_container"
     android:layout_width="match_parent"
@@ -50,17 +51,25 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/tv_song_number_on_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/playback_view_text_color"
+                    android:textSize="@dimen/show_player_control_title_text_size"
+                    tools:text="@string/template_song_number_on_list" />
+
                 <ImageButton
                     android:id="@+id/exo_prev_button"
                     android:layout_width="@dimen/playback_view_button_width"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/playback_view_player_margin"
+                    android:layout_marginLeft="@dimen/playback_view_player_margin"
+                    android:layout_marginRight="@dimen/playback_view_player_margin"
+                    android:layout_marginStart="@dimen/playback_view_player_margin"
                     android:background="@color/background_color_button"
                     android:contentDescription="@string/exo_controls_previous_description"
-                    android:layout_marginEnd="@dimen/playback_view_player_margin"
-                    android:layout_marginRight="@dimen/playback_view_player_margin"
-                    android:layout_marginLeft="@dimen/playback_view_player_margin"
-                    android:layout_marginStart="@dimen/playback_view_player_margin"
                     android:src="@drawable/exo_controls_previous" />
 
                 <ImageButton
@@ -68,12 +77,12 @@
                     android:layout_width="@dimen/playback_view_button_width"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/playback_view_player_margin"
+                    android:layout_marginLeft="@dimen/playback_view_player_margin"
+                    android:layout_marginRight="@dimen/playback_view_player_margin"
+                    android:layout_marginStart="@dimen/playback_view_player_margin"
                     android:background="@color/background_color_button"
                     android:contentDescription="@string/exo_controls_play_description"
-                    android:layout_marginEnd="@dimen/playback_view_player_margin"
-                    android:layout_marginRight="@dimen/playback_view_player_margin"
-                    android:layout_marginLeft="@dimen/playback_view_player_margin"
-                    android:layout_marginStart="@dimen/playback_view_player_margin"
                     android:src="@drawable/exo_controls_play" />
 
                 <ImageButton
@@ -82,12 +91,12 @@
                     android:layout_width="@dimen/playback_view_button_width"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/playback_view_player_margin"
+                    android:layout_marginLeft="@dimen/playback_view_player_margin"
+                    android:layout_marginRight="@dimen/playback_view_player_margin"
+                    android:layout_marginStart="@dimen/playback_view_player_margin"
                     android:background="@color/background_color_button"
                     android:contentDescription="@string/exo_controls_pause_description"
-                    android:layout_marginEnd="@dimen/playback_view_player_margin"
-                    android:layout_marginRight="@dimen/playback_view_player_margin"
-                    android:layout_marginLeft="@dimen/playback_view_player_margin"
-                    android:layout_marginStart="@dimen/playback_view_player_margin"
                     android:src="@drawable/exo_controls_pause" />
 
                 <ImageButton
@@ -95,18 +104,27 @@
                     android:layout_width="@dimen/playback_view_button_width"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/playback_view_player_margin"
+                    android:layout_marginLeft="@dimen/playback_view_player_margin"
+                    android:layout_marginRight="@dimen/playback_view_player_margin"
+                    android:layout_marginStart="@dimen/playback_view_player_margin"
                     android:background="@color/background_color_button"
                     android:contentDescription="@string/exo_controls_next_description"
-                    android:layout_marginEnd="@dimen/playback_view_player_margin"
-                    android:layout_marginRight="@dimen/playback_view_player_margin"
-                    android:layout_marginLeft="@dimen/playback_view_player_margin"
-                    android:layout_marginStart="@dimen/playback_view_player_margin"
                     android:src="@drawable/exo_controls_next" />
+
+                <ImageButton
+                    android:id="@+id/ib_open_np_screen"
+                    style="?android:attr/actionButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:contentDescription="@string/exoplayback_control_back_to_playing_now_button_content_desc"
+                    android:src="@drawable/ic_back_to_screen" />
 
             </LinearLayout>
 
 
         </LinearLayout>
+
 
     </LinearLayout>
     <!--<LinearLayout-->

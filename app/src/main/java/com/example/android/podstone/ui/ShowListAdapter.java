@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.LevelStartEvent;
 import com.example.android.playerservicelib.data.MediaItem;
 import com.example.android.podstone.R;
 import com.example.android.podstone.data.provider.ShowContract;
@@ -28,6 +29,8 @@ public class ShowListAdapter extends RecyclerView.Adapter<ShowListAdapter.ShowLi
     public interface ShowListItemIconOnClick {
         void onClick(MediaItem show, View view);
     }
+
+    private boolean isFavorite;
 
 
     private MediaItem[] shows;
@@ -45,7 +48,13 @@ public class ShowListAdapter extends RecyclerView.Adapter<ShowListAdapter.ShowLi
     @Override
     public ShowListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        View view = inflater.inflate(R.layout.channel_show_list_item, parent, false);
+        int listItemId;
+        if (isFavorite)
+            listItemId = R.layout.favorite_show_list_item;
+        else
+            listItemId = R.layout.channel_show_list_item;
+
+        View view = inflater.inflate(listItemId, parent, false);
         return new ShowListAdapterViewHolder(view);
     }
 
@@ -74,6 +83,10 @@ public class ShowListAdapter extends RecyclerView.Adapter<ShowListAdapter.ShowLi
     public int getItemCount() {
         if (shows == null) return 0;
         return shows.length;
+    }
+
+    public void setIsFavorite(boolean isfavorite) {
+        this.isFavorite = isfavorite;
     }
 
     public MediaItem[] getShows() {
@@ -130,7 +143,7 @@ public class ShowListAdapter extends RecyclerView.Adapter<ShowListAdapter.ShowLi
         public final TextView tvTitle;
         public final TextView tvDate;
         public final TextView tvDescription;
-        public final ImageButton ibPlayIcon;
+        public final ImageButton ibPlayShareIcon;
         public final ImageButton ibFavIcon;
 
         ShowListAdapterViewHolder(View view) {
@@ -141,8 +154,11 @@ public class ShowListAdapter extends RecyclerView.Adapter<ShowListAdapter.ShowLi
             tvTitle = view.findViewById(R.id.channel_list_item_tv_title);
             tvDate = view.findViewById(R.id.channel_list_item_tv_date);
             tvDescription = view.findViewById(R.id.channel_list_item_tv_description);
-            ibPlayIcon = view.findViewById(R.id.play_icon);
-            ibPlayIcon.setOnClickListener(new View.OnClickListener() {
+            if (isFavorite)
+                ibPlayShareIcon = view.findViewById(R.id.share_icon);
+            else
+                ibPlayShareIcon = view.findViewById(R.id.play_icon);
+            ibPlayShareIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showListItemIconOnClick.onClick(getShows()[getAdapterPosition()], v);

@@ -46,6 +46,8 @@
     <string name="fav_act_toolbar_title">Favorites Play List</string>
     <string name="fav_act_delete_conf_title">Delete Podcast?</string>
     <string name="fav_act_delete_conf_mess">Confirm delete Podcast from the play list?</string>
+    <string name="fav_act_new_playing_title">Stop playback</string>
+    <string name="fav_act_new_playing_mess">Stop playback</string>
 
     <!--ABOUT ACTIVITY-->
     <string name="about_act_toolbar_title">About PodStone</string>
@@ -65,6 +67,8 @@
     <string name="menu_item_action_favorites">Favorites</string>
     <string name="menu_item_action_about">About PodStone</string>
 
+    <!--FAVORITES MENU ITEMS-->
+    <string name="fav_menu_item_play_all">Play All</string>
 
     <!--PREFERENCES ITEMS-->
     <string name="pref_key_lang">key_lang</string>
@@ -98,5 +102,6 @@
     <string name="widget_author_tools_text">Podcast Author</string>
     <string name="show_activity_fav_icon_content_desc">Set on/off as favorite podcast</string>
     <string name="activity_channel_iv_image_content_dec">Channel Image</string>
+    <string name="favorites_activity_no_items_to_play">No favorites podcast to play</string>
 
 </resources>

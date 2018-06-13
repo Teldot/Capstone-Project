@@ -5,10 +5,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,22 +22,33 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.playerservicelib.data.MediaItem;
+import com.example.android.playerservicelib.service.MediaPlaybackService;
+import com.example.android.playerservicelib.ui.PlaybackViewFragment;
 import com.example.android.podstone.R;
 import com.example.android.podstone.data.provider.ShowContentProvider;
+import com.example.android.podstone.ui.widget.NowPlayingWidget;
+import com.example.android.podstone.ui.widget.PlayerWidgetService;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-public class FavoritesActivity extends AppCompatActivity implements ShowListAdapter.ShowListItemIconOnClick, ShowListAdapter.ShowsListAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Cursor> {
+public class FavoritesActivity extends AppCompatActivity implements ShowListAdapter.ShowListItemIconOnClick, ShowListAdapter.ShowsListAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Cursor>, PlaybackViewFragment.OnFragmentInteractionListener {
     private static final String TAG = FavoritesActivity.class.getSimpleName();
 
     private final String K_SHOWS_DATA = "K_SHOWS_DATA";
     private static final String K_SHOW = "K_SHOW";
+    private static final String K_RECYCLEDVIEW_STATE = "K_RECYCLEDVIEW_STATE";
+
 
     private static final int ID_SHOWS_LOADER = 457;
 
@@ -44,6 +58,8 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
     private Parcelable listState;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private PlaybackViewFragment playbackViewFragment;
+    private MediaPlaybackService mService;
     private AdView mAdView;
 
     @Override
@@ -78,6 +94,20 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
             }
         });
 
+        if (savedInstanceState == null) {
+            ViewGroup playbackControlContainer = findViewById(R.id.player_frame);
+            playbackViewFragment = new PlaybackViewFragment();
+            playbackViewFragment.setShowAlways(false);
+//            Intent openIntent = new Intent(this, ShowActivity.class);
+//            playbackViewFragment.setOpenIntent(null);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(playbackControlContainer.getId(), playbackViewFragment, playbackViewFragment.getClass().getName())
+                    .commit();
+
+        } else {
+            playbackViewFragment = (PlaybackViewFragment) getSupportFragmentManager().findFragmentByTag(PlaybackViewFragment.class.getName());
+        }
         loadShows();
 
     }
@@ -86,6 +116,48 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
     protected void onResume() {
         super.onResume();
         loadShows();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.favorite_menu_items, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.play_all_favorites) {
+            if (showsAdapter == null || showsAdapter.getShows() == null || showsAdapter.getShows().length == 0) {
+                Toast.makeText(this, R.string.favorites_activity_no_items_to_play, Toast.LENGTH_LONG).show();
+                return true;
+            }
+
+            playbackViewFragment.clearMediaPlayList();
+            for (MediaItem show : showsAdapter.getShows()) {
+                playbackViewFragment.addMediaToPlayList(show);
+            }
+            playbackViewFragment.playMediaItem();
+            PlayerWidgetService.startActionWidgetPlaying(this);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        listState = layoutManager.onSaveInstanceState();
+        outState.putParcelable(K_RECYCLEDVIEW_STATE, listState);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            listState = savedInstanceState.getParcelable(K_RECYCLEDVIEW_STATE);
+        }
     }
 
     private void loadShows() {
@@ -102,10 +174,17 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
             case R.id.favorite_icon:
                 askDeleteConfirmation(show);
                 break;
-            case R.id.play_icon:
-                Intent playPodcast = new Intent(this, ShowActivity.class);
-                playPodcast.putExtra(K_SHOW, show);
-                startActivity(playPodcast);
+            case R.id.share_icon:
+                Spanned shareMess;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    shareMess = Html.fromHtml(show.getShareString(), Html.FROM_HTML_MODE_LEGACY);
+                } else {
+                    shareMess = Html.fromHtml(show.getShareString());
+                }
+                startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(this)
+                        .setType("text/plain")
+                        .setText(shareMess)
+                        .getIntent(), getString(R.string.action_share)));
                 break;
             default:
                 TextView tvDesc = view.findViewById(R.id.channel_list_item_tv_description);
@@ -188,6 +267,7 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         if (data != null || data.getCount() > 0) {
+            showsAdapter.setIsFavorite(true);
             showsAdapter.swapData(data);
             if (listState != null) {
                 layoutManager.onRestoreInstanceState(listState);
@@ -203,4 +283,8 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
     }
 
 
+    @Override
+    public void onBindService(MediaPlaybackService service) {
+        mService = service;
+    }
 }

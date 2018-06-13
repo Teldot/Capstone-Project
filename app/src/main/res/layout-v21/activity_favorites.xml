@@ -29,6 +29,11 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:navigationIcon="@drawable/ic_chevron_left_black_24dp"
                 app:title="@string/fav_act_toolbar_title" />
+
+            <FrameLayout
+                android:id="@+id/player_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout

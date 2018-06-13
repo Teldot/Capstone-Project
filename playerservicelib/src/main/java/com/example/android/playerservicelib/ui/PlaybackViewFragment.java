@@ -57,7 +57,7 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
     private Context mContext;
     private MediaPlaybackService mService;
     boolean mBound;
-    boolean mNowPlayingScreen = false;
+    public boolean mNowPlayingScreen = false;
     private boolean mShowAlways = false;
 
     public SimpleExoPlayerView playerView;
@@ -198,6 +198,10 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
         if (generalView != null && !mShowAlways)
 //            generalView.setVisibility(View.VISIBLE);
             generalView.setVisibility(isNowPlaying() ? View.VISIBLE : View.GONE);
+    }
+
+    public boolean getIsNowPlayingScreen() {
+        return mNowPlayingScreen;
     }
 
     public boolean isNowPlaying() {

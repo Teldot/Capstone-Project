@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="playback_view_player_margin">4dp</dimen>
+    <dimen name="playback_view_player_margin">2dp</dimen>
     <dimen name="playback_view_button_width">50dp</dimen>
     <dimen name="playback_view_left_margin">8dp</dimen>
     <dimen name="playback_view_text1_top_margin">4dp</dimen>

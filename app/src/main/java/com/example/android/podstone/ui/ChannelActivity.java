@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -105,8 +106,7 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
             ViewGroup playbackControlContainer = findViewById(R.id.player_frame);
             playbackViewFragment = new PlaybackViewFragment();
             playbackViewFragment.setShowAlways(false);
-            Intent openIntent = new Intent(this, ShowActivity.class);
-            playbackViewFragment.setOpenIntent(openIntent);
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(playbackControlContainer.getId(), playbackViewFragment, playbackViewFragment.getClass().getName())
@@ -119,6 +119,21 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
 
     }
 
+    private void setOpenIntet2Fragment() {
+        int listLength = playbackViewFragment.getMediaItems() == null ? 0 : playbackViewFragment.getMediaItems().length;
+        if (listLength == 1) {
+            Intent openIntent = new Intent(this, ShowActivity.class);
+            playbackViewFragment.setOpenIntent(openIntent);
+        } else if (listLength > 1) {
+            Intent openIntent = new Intent(this, FavoritesActivity.class);
+            playbackViewFragment.setOpenIntent(openIntent);
+        }
+    }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        setOpenIntet2Fragment();
+    }
 
     private void loadChannelData(long channelId) {
         mSwipeRefreshLayout.setRefreshing(true);
@@ -171,6 +186,7 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
     protected void onResume() {
         super.onResume();
         remapChannelData();
+        setOpenIntet2Fragment();
     }
 
     @Override
