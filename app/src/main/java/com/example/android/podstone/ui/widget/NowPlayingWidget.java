@@ -38,6 +38,7 @@ public class NowPlayingWidget extends AppWidgetProvider {
     public static final String ACTION_NEXT = ".ui.widget.NowPlayingWidget.ACTION_NEXT";
     public static final String ACTION_PLAY = ".ui.widget.NowPlayingWidget.ACTION_PLAY";
     public static final String ACTION_PAUSE = ".ui.widget.NowPlayingWidget.ACTION_PAUSE";
+    public static final String ACTION_NOW_PLAYING = ".ui.widget.NowPlayingWidget.ACTION_NOW_PLAYING";
 
 
     private static final String K_SHOW = "K_SHOW";
@@ -70,7 +71,7 @@ public class NowPlayingWidget extends AppWidgetProvider {
         views.setOnClickPendingIntent(R.id.exo_play_button, actionPendingIntent);
 
         intent = new Intent(context, NowPlayingWidget.class);
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        intent.setAction(ACTION_NOW_PLAYING);
         actionPendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.ib_open_np_screen, actionPendingIntent);
         views.setOnClickPendingIntent(R.id.widget_container, actionPendingIntent);
@@ -84,11 +85,11 @@ public class NowPlayingWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if (mService[0] == null) {
-            Intent oIntent = new Intent(context, MainActivity.class);
-            context.startActivity(oIntent);
-            return;
-        }
+//        if (mService[0] == null) {
+//            Intent oIntent = new Intent(context, MainActivity.class);
+//            context.startActivity(oIntent);
+//            return;
+//        }
         final String action = intent.getAction();
         switch (action) {
             case ACTION_PREV:
@@ -103,9 +104,9 @@ public class NowPlayingWidget extends AppWidgetProvider {
             case ACTION_PAUSE:
                 mService[0].pauseMediaPlaying();
                 break;
-            default:
+            case ACTION_NOW_PLAYING:
                 Intent openIntent;
-                if (mService[0].getMediaItems() != null && mService[0].getMediaItems().length > 0) {
+                if (mService[0] != null && mService[0].getMediaItems() != null && mService[0].getMediaItems().length > 0) {
                     if (mService[0].getMediaItems().length == 1) {
                         int idx = 0;
                         openIntent = new Intent(context, ShowActivity.class);
@@ -119,6 +120,9 @@ public class NowPlayingWidget extends AppWidgetProvider {
                     openIntent = new Intent(context, MainActivity.class);
                 }
                 context.startActivity(openIntent);
+                break;
+            default:
+
                 break;
         }
         super.onReceive(context, intent);
@@ -269,10 +273,7 @@ public class NowPlayingWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
-        for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
-        }
+        updatePlayingWidgets(context, appWidgetManager, appWidgetIds);
     }
 
     @Override
