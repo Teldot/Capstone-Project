@@ -32,9 +32,6 @@ public class PlayerWidgetService extends IntentService {
     private void handleActionPlaying() {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, NowPlayingWidget.class));
-        //Trigger data update to handle the GridView widgets and force a data refresh
-//        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_recipe_ingredients);
-        //Now update all widgets
         NowPlayingWidget.updatePlayingWidgets(this, appWidgetManager, appWidgetIds);
     }
 

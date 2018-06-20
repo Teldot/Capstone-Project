@@ -113,7 +113,6 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
                     .commit();
         } else {
             mChannel = (Channel) savedInstanceState.getSerializable(K_CHANNEL);
-//            remapChannelData();
             playbackViewFragment = (PlaybackViewFragment) getSupportFragmentManager().findFragmentByTag(PlaybackViewFragment.class.getName());
         }
 
@@ -226,7 +225,10 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
                 mChannel.Shows[pos].IsInDb = true;
             }
             while (c.moveToNext());
+
+            c.close();
         }
+
     }
 
     @Override
@@ -303,6 +305,10 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
     @Override
     public void onBindService(MediaPlaybackService service) {
         mService = service;
-//        loadData();
+    }
+
+    @Override
+    public void onTrackChanged(int position, MediaItem mediaItem) {
+
     }
 }

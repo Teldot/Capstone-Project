@@ -103,5 +103,6 @@
     <string name="show_activity_fav_icon_content_desc">Set on/off as favorite podcast</string>
     <string name="activity_channel_iv_image_content_dec">Channel Image</string>
     <string name="favorites_activity_no_items_to_play">No favorites podcast to play</string>
+    <string name="podstone_logo">PodStone Logo</string>
 
 </resources>

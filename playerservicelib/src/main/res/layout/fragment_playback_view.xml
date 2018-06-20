@@ -12,28 +12,4 @@
         android:layout_margin="@dimen/playback_view_player_margin"
         android:gravity="center" />
 
-    <!--<TextView-->
-        <!--android:id="@+id/tv_title"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="@dimen/playback_view_left_margin"-->
-        <!--android:layout_marginStart="@dimen/playback_view_left_margin"-->
-        <!--android:layout_marginTop="@dimen/playback_view_text1_top_margin"-->
-        <!--android:gravity="center"-->
-        <!--android:textColor="@color/playback_view_text_color"-->
-        <!--android:textSize="@dimen/playback_view_text1_text_size"-->
-        <!--tools:text="@string/playback_view_tools_text" />-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/tv_channel"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="@dimen/playback_view_left_margin"-->
-        <!--android:layout_marginStart="@dimen/playback_view_left_margin"-->
-        <!--android:layout_marginTop="@dimen/playback_view_text2_top_margin"-->
-        <!--android:textColor="@color/playback_view_text_color"-->
-        <!--android:textSize="@dimen/playback_view_text2_text_size"-->
-        <!--tools:text="@string/playback_view_tools_text" />-->
-
-
 </FrameLayout>

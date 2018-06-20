@@ -78,18 +78,11 @@ public class NowPlayingWidget extends AppWidgetProvider {
 
         initializePlayerService(context.getApplicationContext(), views, appWidgetManager, appWidgetId);
 
-        // Instruct the widget manager to update the widget
-        //appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-//        if (mService[0] == null) {
-//            Intent oIntent = new Intent(context, MainActivity.class);
-//            context.startActivity(oIntent);
-//            return;
-//        }
         final String action = intent.getAction();
         switch (action) {
             case ACTION_PREV:
@@ -164,6 +157,13 @@ public class NowPlayingWidget extends AppWidgetProvider {
 
                     @Override
                     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                        MediaItem[] mediaItems = mService[0].getMediaItems();
+                        if (mediaItems != null && mediaItems.length > 0) {
+                            int currentMediaItem = mService[0].getCurrentMediaItemIndex();
+                            remoteViews[0] = loadData(mediaItems[currentMediaItem], remoteViews[0], mContext);
+                        } else {
+                            remoteViews[0] = loadData(null, remoteViews[0], mContext);
+                        }
                         remoteViews[0] = setPlayPauseButtonsVisibility(remoteViews[0], mService[0]);
                         appWidgetManager.updateAppWidget(appWidgetId, remoteViews[0]);
                     }

@@ -62,10 +62,8 @@ public class ShowContentProvider extends ContentProvider {
                 return ShowContract.ShowEntry.CONTENT_FILTERED_URI;
             case SHOW_ID:
                 return Uri.parse(ShowContract.ShowEntry.CONTENT_URI.toString()).buildUpon().appendPath(id).build();
-            case SHOWS:
-                return ShowContract.ShowEntry.CONTENT_URI;
             default:
-                return null;
+                return ShowContract.ShowEntry.CONTENT_URI;
         }
     }
 

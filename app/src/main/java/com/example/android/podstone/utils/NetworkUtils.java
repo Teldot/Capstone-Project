@@ -18,19 +18,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Scanner;
 
 public final class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     public static URL buildURL(Context context, int task, String[] uriParts) {
         Uri builtUri = null;
-        String LIMIT = null;
-        String LIMIT_VAL = null;
-        String OFFSET = null;
-        String OFFSET_VAL = null;
-        String LANG = null;
-        String LANG_VAL = null;
+        String LIMIT;
+        String LIMIT_VAL;
+        String OFFSET;
+        String OFFSET_VAL;
+        String LANG;
+        String LANG_VAL;
         switch (task) {
             case FetchDataTask.TASK_STARTUP_LIST:
                 String STARTUP_LIST = context.getString(R.string.PODCAST_DE_API_STARTUP_LIST);
@@ -66,11 +65,9 @@ public final class NetworkUtils {
                 LIMIT = context.getString(R.string.PODCAST_DE_API_LIMIT);
                 LIMIT_VAL = context.getString(R.string.PODCAST_DE_API_LIMIT_VAL);
                 String CHANNEL_ID = uriParts[0];
-                //OFFSET_VAL = uriParts[1];
 
                 builtUri = Uri.parse(String.format(CHANNEL_URL, CHANNEL_ID)).buildUpon()
                         .appendQueryParameter(LIMIT, LIMIT_VAL)
-//                        .appendQueryParameter(OFFSET, OFFSET_VAL)
                         .build();
                 break;
             case FetchDataTask.TASK_SINGLE_SHOW:
@@ -94,27 +91,6 @@ public final class NetworkUtils {
 
         return url;
     }
-
-//    public static String getStringResponseFromHttpUrl(URL url) {
-//
-//        InputStream in = null;
-//        try {
-//            in = getStreamResponseFromHttpUrl(url);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            Log.e(TAG, "getStringResponseFromHttpUrl: " + url);
-//        }
-//        if (in == null) return null;
-//        Scanner scanner = new Scanner(in);
-//        scanner.useDelimiter("\\A");
-//
-//        boolean hasInput = scanner.hasNext();
-//        if (hasInput) {
-//            return scanner.next();
-//        } else {
-//            return null;
-//        }
-//    }
 
     public static StringBuilder getStringResponseFromHttpUrl(URL url) {
         StringBuilder sb = new StringBuilder();

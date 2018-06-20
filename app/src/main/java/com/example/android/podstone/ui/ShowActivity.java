@@ -40,30 +40,22 @@ import com.google.android.gms.ads.AdView;
 
 public class ShowActivity extends AppCompatActivity implements PlaybackViewFragment.OnFragmentInteractionListener {
 
-    //private static final String K_SHOW_DATA = "K_SHOW_DATA";
     private static final String K_SHOW = "K_SHOW";
     private static final String K_FORCE_NEW_PLAYING = "K_FORCE_NEW_PLAYING";
     private static final String K_PLAYER_POSITION = "K_PLAYER_POSITION";
     private static final String K_PLAY_WHEN_READY = "K_PLAY_WHEN_READY";
-    private static final int NOTIFICATION_ID = 906;
-    private static final String TAG = ShowActivity.class.getName();
 
     private MediaItem mShow;
-    private long mShowId;
 
     private TextView tvChannel;
     private TextView tvShowName;
     private TextView tvAuthor;
     private TextView tvCopyright;
-    //private TextView tvDescription;
     private WebView tvDescription;
     private ImageButton ibFavIcon;
     private PlaybackViewFragment playbackViewFragment;
     private MediaPlaybackService mService;
-    private AdView mAdView;
 
-    private NotificationManager mNotificationManager;
-    //    private PlaybackStateCompat.Builder mStateBuilder;
     private long playerPosition = 0;
     private boolean playWReady;
     private boolean forceNewPlaying;
@@ -80,7 +72,7 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
         tvCopyright = findViewById(R.id.tv_show_copyright);
         tvDescription = findViewById(R.id.tv_show_description);
         ibFavIcon = findViewById(R.id.favorite_icon);
-        mAdView = findViewById(R.id.adView);
+        AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
@@ -95,7 +87,6 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
         } else {
             mShow = (MediaItem) getIntent().getSerializableExtra(K_SHOW);
             forceNewPlaying = getIntent().getBooleanExtra(K_FORCE_NEW_PLAYING, false);
-            //loadShowData();
             ViewGroup playbackControlContainer = findViewById(R.id.player_frame);
             playbackViewFragment = new PlaybackViewFragment();
             Bundle bundle = new Bundle();
@@ -120,10 +111,6 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
             ibFavIcon.setImageResource(R.drawable.ic_star_black_24dp);
         else
             ibFavIcon.setImageResource(R.drawable.ic_star_border_black_24dp);
-        Uri showUri = null;
-        if (mShow.MediaUri != null && mShow.MediaUri.length() > 0) {
-            showUri = Uri.parse(mShow.MediaUri);
-        }
         if (forceNewPlaying)
             playbackViewFragment.playMediaItem(mShow);
         PlayerWidgetService.startActionWidgetPlaying(this);
@@ -131,8 +118,6 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-//        if (mExoPlayer != null)
-//            playerPosition = mExoPlayer.getCurrentPosition();
         outState.putLong(K_PLAYER_POSITION, playerPosition);
         outState.putBoolean(K_PLAY_WHEN_READY, playWReady);
         outState.putSerializable(K_SHOW, mShow);
@@ -142,185 +127,27 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
     @Override
     public void onStart() {
         super.onStart();
-        if (Util.SDK_INT > 23) {
-//            loadData();
-        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if ((Util.SDK_INT <= 23)) {
-//            loadData();
-        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        if (mMediaSession != null)
-//            mMediaSession.setActive(false);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (Util.SDK_INT <= 23) {
-//            releasePlayer();
-        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (Util.SDK_INT > 23) {
-//            releasePlayer();
-        }
     }
-
-//    private void initializeMediaSession() {
-//        mMediaSession = new MediaSessionCompat(this, TAG);
-//        mMediaSession.setFlags(
-//                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
-//                        MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
-//        mMediaSession.setMediaButtonReceiver(null);
-//        mStateBuilder = new PlaybackStateCompat.Builder()
-//                .setActions(
-//                        PlaybackStateCompat.ACTION_PLAY |
-//                                PlaybackStateCompat.ACTION_PAUSE |
-//                                PlaybackStateCompat.ACTION_REWIND |
-//                                PlaybackStateCompat.ACTION_PLAY_PAUSE);
-//
-//        mMediaSession.setPlaybackState(mStateBuilder.build());
-//        mMediaSession.setCallback(new SessionCallback());
-//        mMediaSession.setActive(true);
-//    }
-
-//    private void initializePlayer(Uri mediaUri) {
-//        if (mediaUri != null) {
-//            if (mExoPlayer == null) {
-//                // Create an instance of the ExoPlayer.
-//                TrackSelector trackSelector = new DefaultTrackSelector();
-//                LoadControl loadControl = new DefaultLoadControl();
-//                mExoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl);
-//                showPlayerView.setPlayer(mExoPlayer);
-//
-//                // Set the ExoPlayer.EventListener to this activity.
-//                mExoPlayer.addListener(new ExoPlayer.EventListener() {
-//                    @Override
-//                    public void onTimelineChanged(Timeline timeline, Object manifest) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onLoadingChanged(boolean isLoading) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-//                        if ((playbackState == ExoPlayer.STATE_READY) && playWhenReady) {
-//                            mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
-//                                    mExoPlayer.getCurrentPosition(), 1f);
-//                        } else if ((playbackState == ExoPlayer.STATE_READY)) {
-//                            mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
-//                                    mExoPlayer.getCurrentPosition(), 1f);
-//                        }
-//                        playWReady = playWhenReady;
-//                        mMediaSession.setPlaybackState(mStateBuilder.build());
-//                        showNotification(mStateBuilder.build());
-//                    }
-//
-//                    @Override
-//                    public void onPlayerError(ExoPlaybackException error) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onPositionDiscontinuity() {
-//
-//                    }
-//                });
-//
-//                // Prepare the MediaSource.
-//                String userAgent = Util.getUserAgent(this, getApplicationInfo().name);
-//                MediaSource mediaSource = new ExtractorMediaSource(
-//                        mediaUri,
-//                        new DefaultDataSourceFactory(this, userAgent),
-//                        new DefaultExtractorsFactory(),
-//                        null,
-//                        null);
-//                mExoPlayer.prepare(mediaSource);
-//                mExoPlayer.seekTo(playerPosition);
-//                mExoPlayer.setPlayWhenReady(playWReady);
-//            }
-//        }
-//    }
-
-//    private void releasePlayer() {
-//        if (mNotificationManager != null) mNotificationManager.cancelAll();
-//        if (mExoPlayer != null) {
-//            mExoPlayer.stop();
-//            mExoPlayer.release();
-//            mExoPlayer = null;
-//        }
-//    }
-
-//    private void showNotification(PlaybackStateCompat state) {
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-//
-//        int icon;
-//        String play_pause;
-//        long action;
-//        if (state.getState() == PlaybackStateCompat.STATE_PLAYING) {
-//            icon = R.drawable.exo_controls_pause;
-//            play_pause = getString(R.string.exo_controls_pause_description);
-//            action = PlaybackStateCompat.ACTION_PAUSE;
-//        } else {
-//            icon = R.drawable.exo_controls_play;
-//            play_pause = getString(R.string.exo_controls_play_description);
-//            action = PlaybackStateCompat.ACTION_PLAY;
-//        }
-//
-//        NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
-//                icon, play_pause,
-//                MediaButtonReceiver.buildMediaButtonPendingIntent(this, action));
-//
-//        NotificationCompat.Action rewindAction = new NotificationCompat.Action(
-//                R.drawable.exo_controls_rewind, getString(R.string.exo_controls_rewind_description),
-//                MediaButtonReceiver.buildMediaButtonPendingIntent
-//                        (this, PlaybackStateCompat.ACTION_REWIND));
-//
-//        NotificationCompat.Action fastforwardAction = new NotificationCompat.Action(
-//                R.drawable.exo_controls_fastforward, getString(R.string.exo_controls_fastforward_description),
-//                MediaButtonReceiver.buildMediaButtonPendingIntent
-//                        (this, PlaybackStateCompat.ACTION_FAST_FORWARD));
-//
-//
-//        PendingIntent contentPendingIntent = PendingIntent.getActivity
-//                (this, 0, new Intent(this, ShowActivity.class), 0);
-//
-//        builder.setContentTitle(mShow.Title)
-//                .setContentText(mShow.Channel)
-//                .setContentIntent(contentPendingIntent)
-//                .setSmallIcon(R.drawable.ic_podcast_not)
-//                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-//                .addAction(rewindAction)
-//                .addAction(playPauseAction)
-//                .addAction(fastforwardAction);
-////                .setStyle(new MediaStyle()
-////                        .setMediaSession(mMediaSession.getSessionToken())
-////                        .setShowActionsInCompactView(0, 1));
-//
-//
-//        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//        mNotificationManager.notify(NOTIFICATION_ID, builder.build());
-//    }
 
     public void onButtonClick(View view) {
         if (view.getId() == R.id.favorite_icon) {
@@ -365,7 +192,6 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
 
     private boolean saveFavorite() {
         Uri uri = ShowContentProvider.getUri(ShowContentProvider.SHOWS, String.valueOf(ShowContentProvider.NO_SHOW_ID));
-        //Uri uri = ShowContract.ShowEntry.CONTENT_URI;
         ContentValues values = new ContentValues();
         values.put(ShowContract.ShowEntry._ID, mShow.ShowId);
         values.put(ShowContract.ShowEntry.COLUMN_TITLE, mShow.Title);
@@ -397,46 +223,8 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
         loadData();
     }
 
-//    private class SessionCallback extends MediaSessionCompat.Callback {
-//        @Override
-//        public void onPlay() {
-//            mExoPlayer.setPlayWhenReady(true);
-//        }
-//
-//        @Override
-//        public void onPause() {
-//            mExoPlayer.setPlayWhenReady(false);
-//        }
-//
-//        @Override
-//        public void onFastForward() {
-//            long duration = mExoPlayer.getDuration();
-//            long seekTime = getResources().getInteger(R.integer.seek_time_in_secs);
-//            long currentPos = mExoPlayer.getCurrentPosition();
-//            if (duration >= currentPos + seekTime)
-//                mExoPlayer.seekTo(currentPos + seekTime);
-//            else
-//                mExoPlayer.seekTo(duration);
-//        }
-//
-//        @Override
-//        public void onRewind() {
-//            long seekTime = getResources().getInteger(R.integer.seek_time_in_secs);
-//            long currentPos = mExoPlayer.getCurrentPosition();
-//            if (0 <= currentPos - seekTime)
-//                mExoPlayer.seekTo(currentPos - seekTime);
-//            else
-//                mExoPlayer.seekTo(0);
-//        }
-//    }
-//
-//    public static class MediaReceiver extends BroadcastReceiver {
-//        public MediaReceiver() {
-//        }
-//
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            MediaButtonReceiver.handleIntent(mMediaSession, intent);
-//        }
-//    }
+    @Override
+    public void onTrackChanged(int position, MediaItem mediaItem) {
+
+    }
 }

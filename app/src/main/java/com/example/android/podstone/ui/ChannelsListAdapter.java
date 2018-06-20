@@ -27,7 +27,7 @@ public class ChannelsListAdapter extends RecyclerView.Adapter<ChannelsListAdapte
     private final ChannelsListAdapterOnClickHandler mClickHandler;
 
 
-    public ChannelsListAdapter(ChannelsListAdapterOnClickHandler onClickHandler, Context context) {
+    ChannelsListAdapter(ChannelsListAdapterOnClickHandler onClickHandler, Context context) {
         mContext = context;
         mClickHandler = onClickHandler;
     }
@@ -58,7 +58,7 @@ public class ChannelsListAdapter extends RecyclerView.Adapter<ChannelsListAdapte
         return channels.length;
     }
 
-    public Channel[] getChannels() {
+    private Channel[] getChannels() {
         return channels;
     }
 
@@ -74,11 +74,11 @@ public class ChannelsListAdapter extends RecyclerView.Adapter<ChannelsListAdapte
 
     public class ChannelsListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public final ImageView ivChannelImage;
-        public final AppCompatRatingBar ratingBar;
-        public final TextView tvVotes;
-        public final TextView tvTitle;
-        public final TextView tvDate;
+        final ImageView ivChannelImage;
+        final AppCompatRatingBar ratingBar;
+        final TextView tvVotes;
+        final TextView tvTitle;
+        final TextView tvDate;
 
         ChannelsListAdapterViewHolder(View view) {
             super(view);

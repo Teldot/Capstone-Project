@@ -37,7 +37,6 @@ import com.example.android.playerservicelib.service.MediaPlaybackService;
 import com.example.android.playerservicelib.ui.PlaybackViewFragment;
 import com.example.android.podstone.R;
 import com.example.android.podstone.data.provider.ShowContentProvider;
-import com.example.android.podstone.ui.widget.NowPlayingWidget;
 import com.example.android.podstone.ui.widget.PlayerWidgetService;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -45,29 +44,26 @@ import com.google.android.gms.ads.AdView;
 public class FavoritesActivity extends AppCompatActivity implements ShowListAdapter.ShowListItemIconOnClick, ShowListAdapter.ShowsListAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Cursor>, PlaybackViewFragment.OnFragmentInteractionListener {
     private static final String TAG = FavoritesActivity.class.getSimpleName();
 
-    private final String K_SHOWS_DATA = "K_SHOWS_DATA";
-    private static final String K_SHOW = "K_SHOW";
+    //    private final String K_SHOWS_DATA = "K_SHOWS_DATA";
+//    private static final String K_SHOW = "K_SHOW";
     private static final String K_RECYCLEDVIEW_STATE = "K_RECYCLEDVIEW_STATE";
 
 
     private static final int ID_SHOWS_LOADER = 457;
 
-    private Toolbar tbToolbar;
-    private RecyclerView mRecyclerView;
     private ShowListAdapter showsAdapter;
     private Parcelable listState;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private PlaybackViewFragment playbackViewFragment;
     private MediaPlaybackService mService;
-    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
 
-        tbToolbar = findViewById(R.id.toolbar);
+        Toolbar tbToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(tbToolbar);
         tbToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,14 +72,14 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
             }
         });
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
-        mRecyclerView = findViewById(R.id.rv_shows_list);
+        RecyclerView mRecyclerView = findViewById(R.id.rv_shows_list);
         showsAdapter = new ShowListAdapter(this, this, this);
         mRecyclerView.setAdapter(showsAdapter);
         layoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.shows_list_column_items));
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mAdView = findViewById(R.id.adView);
+        AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
@@ -98,8 +94,7 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
             ViewGroup playbackControlContainer = findViewById(R.id.player_frame);
             playbackViewFragment = new PlaybackViewFragment();
             playbackViewFragment.setShowAlways(false);
-//            Intent openIntent = new Intent(this, ShowActivity.class);
-//            playbackViewFragment.setOpenIntent(null);
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(playbackControlContainer.getId(), playbackViewFragment, playbackViewFragment.getClass().getName())
@@ -166,6 +161,7 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
             getSupportLoaderManager().restartLoader(ID_SHOWS_LOADER, null, this);
         else
             getSupportLoaderManager().initLoader(ID_SHOWS_LOADER, null, this);
+        colorCurrentShow();
     }
 
     @Override
@@ -217,15 +213,26 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
         dialog.show();
     }
 
-    private boolean deleteShow(long showId) {
+    private void deleteShow(long showId) {
         Uri uri = ShowContentProvider.getUri(ShowContentProvider.SHOW_ID, String.valueOf(showId));
         int res = getContentResolver().delete(uri, null, null);
         if (res > 0) {
             Toast.makeText(this, getString(R.string.favorite_show_removed), Toast.LENGTH_LONG).show();
-            return true;
         } else {
             Toast.makeText(this, getString(R.string.favorite_show_remove_error), Toast.LENGTH_LONG).show();
-            return false;
+        }
+    }
+
+    private void colorCurrentShow() {
+        if (mService != null && layoutManager.getChildCount() > 0) {
+            int currentShowIdx = mService.getCurrentMediaItemIndex();
+            if (currentShowIdx < 0) return;
+            for (int i = 0; i < layoutManager.getChildCount(); i++) {
+                if (i == currentShowIdx)
+                    layoutManager.findViewByPosition(i).setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+                else
+                    layoutManager.findViewByPosition(i).setBackgroundColor(getResources().getColor(R.color.colorSecondaryText));
+            }
         }
     }
 
@@ -274,6 +281,7 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
             }
         }
         mSwipeRefreshLayout.setRefreshing(false);
+        colorCurrentShow();
     }
 
     @Override
@@ -286,5 +294,11 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
     @Override
     public void onBindService(MediaPlaybackService service) {
         mService = service;
+        colorCurrentShow();
+    }
+
+    @Override
+    public void onTrackChanged(int position, MediaItem mediaItem) {
+        colorCurrentShow();
     }
 }

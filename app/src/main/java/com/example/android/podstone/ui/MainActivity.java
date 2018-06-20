@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 import com.example.android.podstone.R;
 import com.example.android.podstone.data.entities.Channel;
 import com.example.android.podstone.data.entities.SearchResult;
@@ -25,10 +24,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 public class MainActivity extends AppCompatActivity implements ChannelsListAdapter.ChannelsListAdapterOnClickHandler, FetchDataTask.AsyncTaskCompleteListener {
-    private Toolbar toolbar;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView recyclerView;
     private ChannelsListAdapter adapter;
     private LinearLayoutManager layoutManager;
     private SearchResult searchResult;
@@ -36,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
     private TextView tvSearchResults;
     private int FETCHDATA_TASK;
     private Parcelable listState;
-    private AdView mAdView;
 
     private static final String K_SEARCH_RESULT = "K_SEARCH_RESULT";
     private static final String K_SEARCH_QUERY = "K_SEARCH_QUERY";
@@ -52,9 +48,9 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
 //        Crashlytics.getInstance().crash();
 
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
-        toolbar = findViewById(R.id.search_toolbar);
+        Toolbar toolbar = findViewById(R.id.search_toolbar);
         setSupportActionBar(toolbar);
-        recyclerView = findViewById(R.id.rv_podcast_list);
+        RecyclerView recyclerView = findViewById(R.id.rv_podcast_list);
         adapter = new ChannelsListAdapter(this, this);
 
         layoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.podcast_list_column_items));
@@ -72,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
             }
         });
 
-        mAdView = findViewById(R.id.adView);
+        AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 

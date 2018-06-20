@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/podcast_list_item_card_margin"
     android:clickable="true"
+    android:elevation="@dimen/podcast_list_item_card_elevation"
     android:focusable="true"
     android:foreground="?android:selectableItemBackground">
 
@@ -36,6 +37,7 @@
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:progressTint="@color/colorAccent"
                 tools:rating="3.5" />
 
             <TextView

@@ -18,7 +18,7 @@ import java.net.URL;
 public class FetchDataTask extends AsyncTask {
     private final Context mContext;
     private final AsyncTaskCompleteListener<Object> listener;
-    public int Task;
+    private int Task;
 
     private final String TAG = this.getClass().getName();
     public static final int TASK_STARTUP_LIST = 635;
@@ -26,37 +26,37 @@ public class FetchDataTask extends AsyncTask {
     public static final int TASK_SINGLE_CHANNEL = 347;
     public static final int TASK_SINGLE_SHOW = 91;
 
-    public static final String SHOW_OBJ = "show";
-    public static final String SHOW_AUTHOR = "author";
-    public static final String SHOW_SHOW_ID = "show_id";
-    public static final String SHOW_TITLE = "title";
-    public static final String SHOW_DESCRIPTION = "description";
-    public static final String SHOW_COPYRIGHT = "copyright";
-    public static final String SHOW_CHANNEL = "channel_title";
-    public static final String SHOW_DATE = "date";
-    public static final String SHOW_MEDIA_LINK = "media_link";
-    public static final String SHOW_RATING = "rating";
-    public static final String SHOW_VOTES = "votes";
-    public static final String SHOW_LENGTH = "length";
-    public static final String SHOW_SIZE = "size";
-    public static final String SHOW_IMAGE = "image";
+    private static final String SHOW_OBJ = "show";
+    private static final String SHOW_AUTHOR = "author";
+    private static final String SHOW_SHOW_ID = "show_id";
+    private static final String SHOW_TITLE = "title";
+    private static final String SHOW_DESCRIPTION = "description";
+    private static final String SHOW_COPYRIGHT = "copyright";
+    private static final String SHOW_CHANNEL = "channel_title";
+    private static final String SHOW_DATE = "date";
+    private static final String SHOW_MEDIA_LINK = "media_link";
+    private static final String SHOW_RATING = "rating";
+    private static final String SHOW_VOTES = "votes";
+    private static final String SHOW_LENGTH = "length";
+    private static final String SHOW_SIZE = "size";
+    private static final String SHOW_IMAGE = "image";
 
-    public static final String CHAN_OBJ = "channel";
-    public static final String CHAN_CHANNEL_ID = "channel_id";
-    public static final String CHAN_TITLE = "title";
-    public static final String CHAN_DESCRIPTION = "description";
-    public static final String CHAN_IMAGE_URL = "image";
-    public static final String CHAN_RATING = "rating";
-    public static final String CHAN_VOTES = "votes";
-    public static final String CHAN_COPYRIGHT = "copyright";
-    public static final String CHAN_DATE = "date";
-    public static final String CHAN_EPISODES = "episodes";
+    private static final String CHAN_OBJ = "channel";
+    private static final String CHAN_CHANNEL_ID = "channel_id";
+    private static final String CHAN_TITLE = "title";
+    private static final String CHAN_DESCRIPTION = "description";
+    private static final String CHAN_IMAGE_URL = "image";
+    private static final String CHAN_RATING = "rating";
+    private static final String CHAN_VOTES = "votes";
+    private static final String CHAN_COPYRIGHT = "copyright";
+    private static final String CHAN_DATE = "date";
+    private static final String CHAN_EPISODES = "episodes";
 
-    public static final String SRCH_HEAD = "head";
-    public static final String SRCH_HEAD_LIMIT = "limit";
-    public static final String SRCH_HEAD_OFFSET = "offset";
-    public static final String SRCH_HEAD_COUNT = "count";
-    public static final String SRCH_CHANNELS = "channels";
+    private static final String SRCH_HEAD = "head";
+    private static final String SRCH_HEAD_LIMIT = "limit";
+    private static final String SRCH_HEAD_OFFSET = "offset";
+    private static final String SRCH_HEAD_COUNT = "count";
+    private static final String SRCH_CHANNELS = "channels";
 
 
     public FetchDataTask(Context _context, AsyncTaskCompleteListener<Object> _listener, int task) {
@@ -98,7 +98,7 @@ public class FetchDataTask extends AsyncTask {
     private Channel getChannelInfoFromJson(String res) {
         if (res == null || res.length() == 0) return null;
 
-        Channel channel = null;
+        Channel channel;
         try {
             JSONObject obj = new JSONObject(res);
             JSONObject chanObject = obj.getJSONObject(CHAN_OBJ);
@@ -158,7 +158,7 @@ public class FetchDataTask extends AsyncTask {
     private MediaItem getShowInfoFromJson(String res) {
         if (res == null || res.length() == 0) return null;
 
-        MediaItem show = null;
+        MediaItem show;
         try {
             JSONObject obj = new JSONObject(res);
             JSONObject showObject = obj.getJSONObject(SHOW_OBJ);
@@ -177,7 +177,11 @@ public class FetchDataTask extends AsyncTask {
         MediaItem show = new MediaItem();
         try {
             String author = showObject.getString(SHOW_AUTHOR);
-            show.Author = (author == null || author == "null") ? "" : author;
+            show.Author = (author == null || author.equals("null")) ? "" : author;
+            if (showObject.has(SHOW_COPYRIGHT)) {
+                String copyRight = showObject.getString(SHOW_COPYRIGHT);
+                show.Copyright = (copyRight == null || copyRight.equals("null")) ? "" : copyRight;
+            }
             show.Description = showObject.getString(SHOW_DESCRIPTION);
             if (showObject.has(SHOW_IMAGE)) {
                 Log.i(TAG, "Has Image");
@@ -198,8 +202,6 @@ public class FetchDataTask extends AsyncTask {
             show.Title = showObject.getString(SHOW_TITLE);
             if (showObject.has(SHOW_CHANNEL))
                 show.Channel = showObject.getString(SHOW_CHANNEL);
-            if (showObject.has(SHOW_COPYRIGHT))
-                show.Copyright = showObject.getString(SHOW_COPYRIGHT);
             show.Votes = showObject.getDouble(SHOW_VOTES);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -238,7 +240,7 @@ public class FetchDataTask extends AsyncTask {
     }
 
     private String getFormatDate(String oDate) {
-        if (oDate == null && oDate.length() == 0) return "";
+        if (oDate == null || oDate.length() == 0) return "";
 
         String[] dateParts = oDate.split(" ");
         if (dateParts.length == 0) return "";

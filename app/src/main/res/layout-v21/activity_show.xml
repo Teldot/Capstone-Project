@@ -54,7 +54,6 @@
         android:id="@+id/tv_show_copyright"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:textSize="@dimen/show_description_text_size"
         app:layout_constraintStart_toEndOf="@+id/favorite_icon"
@@ -63,7 +62,7 @@
 
     <ImageButton
         android:id="@+id/favorite_icon"
-        style="?attr/actionButtonStyle"
+        style="?android:attr/actionButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -76,7 +75,8 @@
         android:scaleY="1.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/player_frame"
-        app:srcCompat="@drawable/ic_star_border_black_24dp" />
+        app:srcCompat="@drawable/ic_star_border_black_24dp"
+        android:contentDescription="@string/show_activity_fav_icon_content_desc" />
 
     <ScrollView
         android:id="@+id/scroller_id"
@@ -90,21 +90,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_show_copyright">
 
-        <!--<TextView-->
-        <!--android:id="@+id/tv_show_description"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="30dp"-->
-        <!--android:layout_marginEnd="16dp"-->
-        <!--android:layout_marginLeft="16dp"-->
-        <!--android:layout_marginRight="16dp"-->
-        <!--android:layout_marginStart="16dp"-->
-        <!--android:layout_marginTop="16dp"-->
-        <!--android:paddingBottom="20dp"-->
-        <!--android:scrollbars="vertical"-->
-        <!--android:textSize="@dimen/show_description_text_size" />-->
-
-        <WebView
+         <WebView
             android:id="@+id/tv_show_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -13,7 +13,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.crashlytics.android.answers.LevelStartEvent;
 import com.example.android.playerservicelib.data.MediaItem;
 import com.example.android.podstone.R;
 import com.example.android.podstone.data.provider.ShowContract;
@@ -38,7 +37,7 @@ public class ShowListAdapter extends RecyclerView.Adapter<ShowListAdapter.ShowLi
     private final ShowsListAdapterOnClickHandler mClickHandler;
     private final ShowListItemIconOnClick showListItemIconOnClick;
 
-    public ShowListAdapter(ShowsListAdapterOnClickHandler onClickHandler, ShowListItemIconOnClick onClickIcon, Context context) {
+    ShowListAdapter(ShowsListAdapterOnClickHandler onClickHandler, ShowListItemIconOnClick onClickIcon, Context context) {
         mContext = context;
         mClickHandler = onClickHandler;
         showListItemIconOnClick = onClickIcon;
@@ -90,23 +89,25 @@ public class ShowListAdapter extends RecyclerView.Adapter<ShowListAdapter.ShowLi
     }
 
     public MediaItem[] getShows() {
+        if (shows == null)
+            shows = new MediaItem[0];
         return shows;
     }
 
-    public MediaItem[] swapData(MediaItem[] _shows) {
+    public void swapData(MediaItem[] _shows) {
         if (_shows == null || _shows.length == 0) {
             shows = null;
             this.notifyDataSetChanged();
-            return shows;
+            return;
         }
         shows = _shows;
         this.notifyDataSetChanged();
-        return shows;
     }
 
-    public MediaItem[] swapData(Cursor data) {
+    public void swapData(Cursor data) {
         if (data == null) {
-            return swapData(new MediaItem[0]);
+            swapData(new MediaItem[0]);
+            return;
         }
         int col_ShowId = data.getColumnIndex(ShowContract.ShowEntry._ID);
         int col_Image = data.getColumnIndex(ShowContract.ShowEntry.COLUMN_IMAGE);
@@ -133,18 +134,18 @@ public class ShowListAdapter extends RecyclerView.Adapter<ShowListAdapter.ShowLi
             showData[i].Channel = data.getString(col_Channel);
         }
 
-        return swapData(showData);
+        swapData(showData);
     }
 
     public class ShowListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public final ImageView ivShowImage;
-        public final AppCompatRatingBar ratingBar;
-        public final TextView tvVotes;
-        public final TextView tvTitle;
-        public final TextView tvDate;
-        public final TextView tvDescription;
-        public final ImageButton ibPlayShareIcon;
-        public final ImageButton ibFavIcon;
+        final ImageView ivShowImage;
+        final AppCompatRatingBar ratingBar;
+        final TextView tvVotes;
+        final TextView tvTitle;
+        final TextView tvDate;
+        final TextView tvDescription;
+        final ImageButton ibPlayShareIcon;
+        final ImageButton ibFavIcon;
 
         ShowListAdapterViewHolder(View view) {
             super(view);

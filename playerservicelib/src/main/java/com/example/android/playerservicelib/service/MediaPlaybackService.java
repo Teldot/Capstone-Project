@@ -44,15 +44,12 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
     boolean mAllowRebind; // indicates whether onRebind should be used
 
 
-    private String userAgent;
-
     public SimpleExoPlayer getmExoPlayer() {
         return mExoPlayer;
     }
 
     public boolean isNowPlaying() {
-        if (mExoPlayer == null) return false;
-        return mExoPlayer.getPlayWhenReady();
+        return mExoPlayer != null && mExoPlayer.getPlayWhenReady();
     }
 
     @Override
@@ -67,7 +64,7 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
         return mStartMode;
     }
 
-    private boolean initPlayer() {
+    private void initPlayer() {
         if (mExoPlayer == null) {
             // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
@@ -77,7 +74,6 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
             // Set the ExoPlayer.EventListener to this activity.
             mExoPlayer.addListener(this);
         }
-        return true;
 
     }
 
@@ -95,8 +91,7 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
     public boolean addMediaToPlayList(MediaItem mediaItem) {
         try {
             if (mediaItems == null) mediaItems = new MediaItem[0];
-            ArrayList<MediaItem> arrayList = new ArrayList<MediaItem>();
-            arrayList.addAll(Arrays.asList(mediaItems));
+            ArrayList<MediaItem> arrayList = new ArrayList<>(Arrays.asList(mediaItems));
 
             if (!arrayList.contains(mediaItem)) {
                 arrayList.add(mediaItem);
@@ -219,9 +214,12 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
     public void playPreviousMediaItem() {
         if (mediaItems == null || mediaItems.length == 0) return;
         if (mediaItemIndex == 0) {
-            mExoPlayer.seekTo(0l);
-        } else {
+            mExoPlayer.seekTo(0L);
+        } else if (mediaItemIndex > 0) {
             mediaItemIndex--;
+            playMediaItem();
+        } else {
+            mediaItemIndex = 0;
             playMediaItem();
         }
     }
@@ -233,7 +231,7 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
 
         Log.i(TAG, mediaItems[mediaItemIndex].MediaUri);
         Uri uri = Uri.parse(mediaItems[mediaItemIndex].MediaUri).buildUpon().build();
-        userAgent = Util.getUserAgent(this, this.getApplicationInfo().name);
+        String userAgent = Util.getUserAgent(this, this.getApplicationInfo().name);
         MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultDataSourceFactory(
                 this, userAgent), new DefaultExtractorsFactory(), null, null);
         mExoPlayer.prepare(mediaSource);
@@ -288,21 +286,21 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
     }
 
     public interface MediaPlaybackServiceEventHandler {
-        public void onPlayListItemsChanged(int mediaItemsCount, int position);
+        void onPlayListItemsChanged(int mediaItemsCount, int position);
 
-        public void onTrackChanged(int position, MediaItem mediaItem);
+        void onTrackChanged(int position, MediaItem mediaItem);
 
-        public void onTimelineChanged(Timeline timeline, Object manifest);
+        void onTimelineChanged(Timeline timeline, Object manifest);
 
-        public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections);
+        void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections);
 
-        public void onLoadingChanged(boolean isLoading);
+        void onLoadingChanged(boolean isLoading);
 
-        public void onPlayerStateChanged(boolean playWhenReady, int playbackState);
+        void onPlayerStateChanged(boolean playWhenReady, int playbackState);
 
-        public void onPlayerError(ExoPlaybackException error);
+        void onPlayerError(ExoPlaybackException error);
 
-        public void onPositionDiscontinuity();
+        void onPositionDiscontinuity();
     }
 
 }

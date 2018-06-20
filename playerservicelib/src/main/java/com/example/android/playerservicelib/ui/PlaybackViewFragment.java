@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -35,15 +34,11 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
 
 public class PlaybackViewFragment extends Fragment implements MediaPlaybackService.MediaPlaybackServiceEventHandler, SimpleExoPlayerView.OnClickListener {
     private static final String TAG = PlaybackViewFragment.class.getSimpleName();
 
-    public static final String K_SHOW_TITLE = "K_SHOW_TITLE";
-    public static final String K_SHOW_CHANNEL = "K_SHOW_CHANNEL";
-    public static final String K_SHOW_URL = "K_SHOW_URL";
     private static final String K_PLAYER_POS = "K_PLAYER_POS";
     private static final String K_SHOW_ALWAYS = "K_SHOW_ALWAYS";
     private static final String K_IS_BOUND = "IS_BOUND";
@@ -51,7 +46,6 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
 
 
     private MediaItem mMediaItem;
-    private int mMediaItemPos;
 
     private long mPlayerPos = 0;
     private Context mContext;
@@ -62,9 +56,7 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
 
     public SimpleExoPlayerView playerView;
 
-    private ImageButton buttonPrevious;
     private ImageButton buttonNext;
-    private ImageButton buttonBack2NP;
     private TextView tvTitle;
     private TextView tvAuthor;
     private TextView tvSongNum;
@@ -92,7 +84,7 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         generalView = inflater.inflate(R.layout.fragment_playback_view, container, false);
         playerView = generalView.findViewById(R.id.show_player);
         //
@@ -112,7 +104,7 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
                 PlaybackViewFragment.this.onClick(v);
             }
         });
-        buttonPrevious = playerView.findViewById(R.id.exo_prev_button);
+        ImageButton buttonPrevious = playerView.findViewById(R.id.exo_prev_button);
         buttonPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,7 +112,7 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
             }
         });
 
-        buttonBack2NP = playerView.findViewById(R.id.ib_open_np_screen);
+        ImageButton buttonBack2NP = playerView.findViewById(R.id.ib_open_np_screen);
         if (mNowPlayingScreen)
             buttonBack2NP.setVisibility(View.GONE);
         else
@@ -130,20 +122,13 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
                     PlaybackViewFragment.this.onClick(v);
                 }
             });
-//        generalView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                PlaybackViewFragment.this.onClick(v);
-//            }
-//        });
+
         playerView.setControllerShowTimeoutMs(0);
         playerView.setControllerVisibilityListener(new PlaybackControlView.VisibilityListener() {
             @Override
             public void onVisibilityChange(int visibility) {
                 if (visibility != PlaybackControlView.VISIBLE) {
-//                        playerView.setUseController(true);
                     playerView.showController();
-//                    playerView.refreshDrawableState();
                     playerView.setVisibility(View.VISIBLE);
                 }
             }
@@ -171,19 +156,6 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
         return generalView;
     }
 
-//    private void setOnClickListener(ArrayList<View> children) {
-//        for (View v : children) {
-//            v.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    PlaybackViewFragment.this.onClick(v);
-//                }
-//            });
-//            if (v.getTouchables().size() > 0)
-//                setOnClickListener(v.getTouchables());
-//        }
-//    }
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putLong(K_PLAYER_POS, mPlayerPos);
@@ -196,7 +168,6 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
     public void setShowAlways(boolean showAlways) {
         mShowAlways = showAlways;
         if (generalView != null && !mShowAlways)
-//            generalView.setVisibility(View.VISIBLE);
             generalView.setVisibility(isNowPlaying() ? View.VISIBLE : View.GONE);
     }
 
@@ -205,10 +176,7 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
     }
 
     public boolean isNowPlaying() {
-        if (mService == null)
-            return false;
-        else
-            return mService.isNowPlaying();
+        return mService != null && mService.isNowPlaying();
     }
 
     public void setOpenIntent(Intent intent) {
@@ -217,7 +185,7 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
 
     private void loadData() {
         if (mService != null) {
-            mMediaItemPos = mService.getCurrentMediaItemIndex();
+            int mMediaItemPos = mService.getCurrentMediaItemIndex();
             if (mMediaItemPos != MediaPlaybackService.INITIAL_INDEX) {
                 mMediaItem = mService.getMediaItems()[mMediaItemPos];
                 tvTitle.setText(mMediaItem.Title);
@@ -239,6 +207,7 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
                     ivShowImage.setImageResource(R.drawable.ic_podcast_not);
                     Log.i(TAG, "No image available");
                 }
+                mListener.onTrackChanged(mMediaItemPos, mMediaItem);
             } else
                 tvSongNum.setText(String.format(getString(R.string.template_song_number_on_list), 0, 0));
         }
@@ -254,10 +223,6 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
     @Override
     public void onStop() {
         super.onStop();
-//        if (mBound) {
-//            mContext.unbindService(mConnection);
-//            mBound = false;
-//        }
     }
 
     @Override
@@ -282,16 +247,14 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
         mListener = null;
     }
 
-    public boolean addMediaToPlayList(MediaItem mediaItem) {
-        if (mService != null)
-            return mService.addMediaToPlayList(mediaItem);
-        else return false;
+    public void addMediaToPlayList(MediaItem mediaItem) {
+        if (mService != null) {
+            mService.addMediaToPlayList(mediaItem);
+        }
     }
 
     public boolean removeMediaFromPlayList(MediaItem mediaItem) {
-        if (mService != null)
-            return mService.removeMediaToPlayList(mediaItem);
-        else return false;
+        return mService != null && mService.removeMediaToPlayList(mediaItem);
     }
 
     public MediaItem[] getMediaItems() {
@@ -335,9 +298,6 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
 
     public void playMediaItem(MediaItem mediaItem) {
         mService.playMediaItem(mediaItem);
-        if (mService.getCurrentMediaItemIndex() == 0) {
-
-        }
     }
 
     public void playMediaItem() {
@@ -397,6 +357,7 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
         boolean isThereNextSong = (position > MediaPlaybackService.INITIAL_INDEX &&
                 position < mService.getMediaItems().length - 1);
         buttonNext.setEnabled(isThereNextSong);
+        mListener.onTrackChanged(position, mediaItem);
     }
 
     @Override
@@ -456,5 +417,7 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
      */
     public interface OnFragmentInteractionListener {
         void onBindService(MediaPlaybackService service);
+
+        void onTrackChanged(int position, MediaItem mediaItem);
     }
 }
