@@ -191,7 +191,7 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
                 tvTitle.setText(mMediaItem.Title);
                 tvAuthor.setText(mMediaItem.Channel);
                 if (mService.getMediaItems().length > 0)
-                    tvSongNum.setText(String.format(getString(R.string.template_song_number_on_list), (mMediaItemPos + 1), mService.getMediaItems().length));
+                    tvSongNum.setText(String.format(mContext.getString(R.string.template_song_number_on_list), (mMediaItemPos + 1), mService.getMediaItems().length));
                 if (mMediaItem.ImgUri != null && mMediaItem.ImgUri.length() > 0) {
                     Log.i(TAG, mMediaItem.ImgUri);
                     try {
@@ -207,7 +207,8 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
                     ivShowImage.setImageResource(R.drawable.ic_podcast_not);
                     Log.i(TAG, "No image available");
                 }
-                mListener.onTrackChanged(mMediaItemPos, mMediaItem);
+                if (mListener != null)
+                    mListener.onTrackChanged(mMediaItemPos, mMediaItem);
             } else
                 tvSongNum.setText(String.format(getString(R.string.template_song_number_on_list), 0, 0));
         }
@@ -357,7 +358,8 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
         boolean isThereNextSong = (position > MediaPlaybackService.INITIAL_INDEX &&
                 position < mService.getMediaItems().length - 1);
         buttonNext.setEnabled(isThereNextSong);
-        mListener.onTrackChanged(position, mediaItem);
+        if (mListener != null)
+            mListener.onTrackChanged(position, mediaItem);
     }
 
     @Override

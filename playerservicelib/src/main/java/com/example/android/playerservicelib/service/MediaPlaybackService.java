@@ -37,7 +37,7 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
 
     private MediaItem[] mediaItems;
     private int mediaItemIndex = INITIAL_INDEX;
-    private MediaPlaybackServiceEventHandler mediaPlaybackServiceEventHandler;
+    private ArrayList<MediaPlaybackServiceEventHandler> mediaPlaybackServiceEventHandlers;
     private SimpleExoPlayer mExoPlayer;
     int mStartMode;       // indicates how to behave if the service is killed
     IBinder mBinder = new MediaPlaybackBinder();      // interface for clients that bind
@@ -96,7 +96,10 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
             if (!arrayList.contains(mediaItem)) {
                 arrayList.add(mediaItem);
                 mediaItems = arrayList.toArray(mediaItems);
-                mediaPlaybackServiceEventHandler.onPlayListItemsChanged(mediaItems.length, mediaItemIndex);
+//                mediaPlaybackServiceEventHandler.onPlayListItemsChanged(mediaItems.length, mediaItemIndex);
+                if (mediaPlaybackServiceEventHandlers != null && mediaPlaybackServiceEventHandlers.size() > 0)
+                    for (MediaPlaybackServiceEventHandler ev : mediaPlaybackServiceEventHandlers)
+                        ev.onPlayListItemsChanged(mediaItems.length, mediaItemIndex);
                 return true;
             }
         } catch (Exception e) {
@@ -108,14 +111,20 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
     public boolean removeMediaToPlayList(MediaItem mediaItem) {
         if (mediaItems == null) {
             mediaItems = new MediaItem[0];
-            mediaPlaybackServiceEventHandler.onPlayListItemsChanged(mediaItems.length, mediaItemIndex);
+//            mediaPlaybackServiceEventHandler.onPlayListItemsChanged(mediaItems.length, mediaItemIndex);
+            if (mediaPlaybackServiceEventHandlers != null && mediaPlaybackServiceEventHandlers.size() > 0)
+                for (MediaPlaybackServiceEventHandler ev : mediaPlaybackServiceEventHandlers)
+                    ev.onPlayListItemsChanged(mediaItems.length, mediaItemIndex);
             return false;
         } else {
             List<MediaItem> arrayList = Arrays.asList(mediaItems);
             arrayList.remove(mediaItem);
 
             mediaItems = arrayList.toArray(mediaItems);
-            mediaPlaybackServiceEventHandler.onPlayListItemsChanged(mediaItems.length, mediaItemIndex);
+//            mediaPlaybackServiceEventHandler.onPlayListItemsChanged(mediaItems.length, mediaItemIndex);
+            if (mediaPlaybackServiceEventHandlers != null && mediaPlaybackServiceEventHandlers.size() > 0)
+                for (MediaPlaybackServiceEventHandler ev : mediaPlaybackServiceEventHandlers)
+                    ev.onPlayListItemsChanged(mediaItems.length, mediaItemIndex);
             return true;
         }
     }
@@ -127,7 +136,10 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
     public void clearMediaPlayList() {
         mediaItems = new MediaItem[0];
         mediaItemIndex = INITIAL_INDEX;
-        mediaPlaybackServiceEventHandler.onPlayListItemsChanged(mediaItems.length, mediaItemIndex);
+        //mediaPlaybackServiceEventHandler.onPlayListItemsChanged(mediaItems.length, mediaItemIndex);
+        if (mediaPlaybackServiceEventHandlers != null && mediaPlaybackServiceEventHandlers.size() > 0)
+            for (MediaPlaybackServiceEventHandler ev : mediaPlaybackServiceEventHandlers)
+                ev.onPlayListItemsChanged(mediaItems.length, mediaItemIndex);
     }
     //***************************************************
 
@@ -168,26 +180,38 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
     //***************************************************
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
-        if (mediaPlaybackServiceEventHandler != null)
-            mediaPlaybackServiceEventHandler.onTimelineChanged(timeline, manifest);
+//        if (mediaPlaybackServiceEventHandler != null)
+//            mediaPlaybackServiceEventHandler.onTimelineChanged(timeline, manifest);
+        if (mediaPlaybackServiceEventHandlers != null && mediaPlaybackServiceEventHandlers.size() > 0)
+            for (MediaPlaybackServiceEventHandler ev : mediaPlaybackServiceEventHandlers)
+                ev.onTimelineChanged(timeline, manifest);
     }
 
     @Override
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-        if (mediaPlaybackServiceEventHandler != null)
-            mediaPlaybackServiceEventHandler.onTracksChanged(trackGroups, trackSelections);
+//        if (mediaPlaybackServiceEventHandler != null)
+//            mediaPlaybackServiceEventHandler.onTracksChanged(trackGroups, trackSelections);
+        if (mediaPlaybackServiceEventHandlers != null && mediaPlaybackServiceEventHandlers.size() > 0)
+            for (MediaPlaybackServiceEventHandler ev : mediaPlaybackServiceEventHandlers)
+                ev.onTracksChanged(trackGroups, trackSelections);
     }
 
     @Override
     public void onLoadingChanged(boolean isLoading) {
-        if (mediaPlaybackServiceEventHandler != null)
-            mediaPlaybackServiceEventHandler.onLoadingChanged(isLoading);
+//        if (mediaPlaybackServiceEventHandler != null)
+//            mediaPlaybackServiceEventHandler.onLoadingChanged(isLoading);
+        if (mediaPlaybackServiceEventHandlers != null && mediaPlaybackServiceEventHandlers.size() > 0)
+            for (MediaPlaybackServiceEventHandler ev : mediaPlaybackServiceEventHandlers)
+                ev.onLoadingChanged(isLoading);
     }
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if (mediaPlaybackServiceEventHandler != null)
-            mediaPlaybackServiceEventHandler.onPlayerStateChanged(playWhenReady, playbackState);
+//        if (mediaPlaybackServiceEventHandler != null)
+//            mediaPlaybackServiceEventHandler.onPlayerStateChanged(playWhenReady, playbackState);
+        if (mediaPlaybackServiceEventHandlers != null && mediaPlaybackServiceEventHandlers.size() > 0)
+            for (MediaPlaybackServiceEventHandler ev : mediaPlaybackServiceEventHandlers)
+                ev.onPlayerStateChanged(playWhenReady, playbackState);
 
         //When finish playing media look for next media in the array to play it
         if (playWhenReady && playbackState == ExoPlayer.STATE_ENDED) {
@@ -197,17 +221,25 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
 
     @Override
     public void onPlayerError(ExoPlaybackException error) {
-        if (mediaPlaybackServiceEventHandler != null)
-            mediaPlaybackServiceEventHandler.onPlayerError(error);
+//        if (mediaPlaybackServiceEventHandler != null)
+//            mediaPlaybackServiceEventHandler.onPlayerError(error);
+        if (mediaPlaybackServiceEventHandlers != null && mediaPlaybackServiceEventHandlers.size() > 0)
+            for (MediaPlaybackServiceEventHandler ev : mediaPlaybackServiceEventHandlers)
+                ev.onPlayerError(error);
     }
 
     @Override
     public void onPositionDiscontinuity() {
-        if (mediaPlaybackServiceEventHandler != null)
-            mediaPlaybackServiceEventHandler.onPositionDiscontinuity();
+//        if (mediaPlaybackServiceEventHandler != null)
+//            mediaPlaybackServiceEventHandler.onPositionDiscontinuity();
+        if (mediaPlaybackServiceEventHandlers != null && mediaPlaybackServiceEventHandlers.size() > 0)
+            for (MediaPlaybackServiceEventHandler ev : mediaPlaybackServiceEventHandlers)
+                ev.onPositionDiscontinuity();
     }
 
     public int getCurrentMediaItemIndex() {
+        if (mediaItemIndex == -1 && mediaItems != null && mediaItems.length > 0)
+            mediaItemIndex = 0;
         return mediaItemIndex;
     }
 
@@ -237,8 +269,11 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
         mExoPlayer.prepare(mediaSource);
         mExoPlayer.seekTo(0);
         mExoPlayer.setPlayWhenReady(true);
+        if (mediaPlaybackServiceEventHandlers != null && mediaPlaybackServiceEventHandlers.size() > 0)
+            for (MediaPlaybackServiceEventHandler ev : mediaPlaybackServiceEventHandlers)
+                ev.onTrackChanged(mediaItemIndex, mediaItems[mediaItemIndex]);
 
-        mediaPlaybackServiceEventHandler.onTrackChanged(mediaItemIndex, mediaItems[mediaItemIndex]);
+//        mediaPlaybackServiceEventHandler.onTrackChanged();
     }
 
     public void playMediaItem(MediaItem mediaItem) {
@@ -280,7 +315,10 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
     public class MediaPlaybackBinder extends Binder {
         public MediaPlaybackService getService(@NonNull MediaPlaybackServiceEventHandler eventHandler) {
             // Return this instance of LocalService so clients can call public methods
-            mediaPlaybackServiceEventHandler = eventHandler;
+            if (mediaPlaybackServiceEventHandlers == null)
+                mediaPlaybackServiceEventHandlers = new ArrayList<>();
+            if (!mediaPlaybackServiceEventHandlers.contains(eventHandler))
+                mediaPlaybackServiceEventHandlers.add(eventHandler);
             return MediaPlaybackService.this;
         }
     }

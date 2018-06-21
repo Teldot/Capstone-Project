@@ -119,6 +119,7 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
     }
 
     private void setOpenIntet2Fragment() {
+        if (playbackViewFragment == null) return;
         int listLength = playbackViewFragment.getMediaItems() == null ? 0 : playbackViewFragment.getMediaItems().length;
         if (listLength == 1) {
             Intent openIntent = new Intent(this, ShowActivity.class);

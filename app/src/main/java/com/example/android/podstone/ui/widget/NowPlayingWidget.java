@@ -86,15 +86,23 @@ public class NowPlayingWidget extends AppWidgetProvider {
         final String action = intent.getAction();
         switch (action) {
             case ACTION_PREV:
+                if (mService[0] == null || mService[0].getMediaItems() == null || mService[0].getMediaItems().length == 0)
+                    break;
                 mService[0].playPreviousMediaItem();
                 break;
             case ACTION_NEXT:
+                if (mService[0] == null || mService[0].getMediaItems() == null || mService[0].getMediaItems().length == 0)
+                    break;
                 mService[0].playNextMediaItem();
                 break;
             case ACTION_PLAY:
+                if (mService[0] == null || mService[0].getMediaItems() == null || mService[0].getMediaItems().length == 0)
+                    break;
                 mService[0].resumeMediaPlaying();
                 break;
             case ACTION_PAUSE:
+                if (mService[0] == null || mService[0].getMediaItems() == null || mService[0].getMediaItems().length == 0)
+                    break;
                 mService[0].pauseMediaPlaying();
                 break;
             case ACTION_NOW_PLAYING:
