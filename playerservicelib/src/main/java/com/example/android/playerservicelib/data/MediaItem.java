@@ -2,6 +2,9 @@ package com.example.android.playerservicelib.data;
 
 import java.io.Serializable;
 
+/**
+ * Media Item serializable class
+ */
 public class MediaItem implements Serializable {
     private static final String SHARE_TEMP = "Enjoy this great podcast with <i><b>PodStone</b></i>:<p>Channel: %s</p><p>Title: %s</p><p>%s</p>";
 
