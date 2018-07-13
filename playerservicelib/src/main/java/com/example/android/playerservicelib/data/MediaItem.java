@@ -11,9 +11,21 @@ public class MediaItem implements Serializable {
     public MediaItem() {
     }
 
+    /**
+     * Entity Id.
+     */
     public long ShowId;
+    /**
+     * Media title.
+     */
     public String Title;
+    /**
+     * Media Description.
+     */
     public String Description;
+    /**
+     * Media Author.
+     */
     public String Author;
     public String ShowDate;
     public String MediaUri;
