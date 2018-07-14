@@ -27,8 +27,17 @@ public class MediaItem implements Serializable {
      * Media Author.
      */
     public String Author;
+    /**
+     * Media date.
+     */
     public String ShowDate;
+    /**
+     * Media Uri.
+     */
     public String MediaUri;
+    /**
+     * Media rating.
+     */
     public double Rating;
     public double Votes;
     public String Copyright;
