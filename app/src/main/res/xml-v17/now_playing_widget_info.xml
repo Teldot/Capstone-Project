@@ -2,8 +2,8 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialKeyguardLayout="@layout/now_playing_widget"
     android:initialLayout="@layout/now_playing_widget"
-    android:minHeight="72dp"
-    android:minWidth="250dp"
+    android:minHeight="56dp"
+    android:minWidth="272dp"
     android:previewImage="@drawable/ic_podcast"
     android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen" />

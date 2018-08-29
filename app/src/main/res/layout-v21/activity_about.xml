@@ -36,6 +36,7 @@
         android:text="@string/about_act_app_author"/>
 
     <ImageView
+        android:id="@+id/iv_logo"
         app:srcCompat="@drawable/ic_podcast"
         android:layout_gravity="center"
         android:layout_width="200dp"
