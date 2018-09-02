@@ -15,11 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.android.podstone.R;
+import com.teldot.android.podstone.R;
 import com.teldot.android.podstone.data.entities.Channel;
 import com.teldot.android.podstone.data.entities.SearchResult;
 import com.teldot.android.podstone.ui.widget.PlayerWidgetService;
-import com.example.android.podstone.utils.FetchDataTask;
+import com.teldot.android.podstone.utils.FetchDataTask;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 

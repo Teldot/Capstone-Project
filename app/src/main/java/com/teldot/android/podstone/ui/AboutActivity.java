@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
-import com.example.android.podstone.R;
+import com.teldot.android.podstone.R;
 
 public class AboutActivity extends AppCompatActivity {
     private Toolbar tbToolbar;

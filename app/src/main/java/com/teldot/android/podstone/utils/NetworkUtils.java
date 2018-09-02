@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 
-import com.example.android.podstone.R;
+import com.teldot.android.podstone.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.BufferedReader;

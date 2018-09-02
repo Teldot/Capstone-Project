@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.android.podstone.R;
+import com.teldot.android.podstone.R;
 
 public class SettingsActivity extends AppCompatActivity {
 

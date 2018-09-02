@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.teldot.android.playerservicelib.data.MediaItem;
-import com.example.android.podstone.R;
+import com.teldot.android.podstone.R;
 import com.teldot.android.podstone.data.provider.ShowContract;
 import com.teldot.android.podstone.utils.NetworkUtils;
 

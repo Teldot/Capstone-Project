@@ -28,7 +28,7 @@ import android.widget.Toast;
 import com.teldot.android.playerservicelib.data.MediaItem;
 import com.teldot.android.playerservicelib.service.MediaPlaybackService;
 import com.teldot.android.playerservicelib.ui.PlaybackViewFragment;
-import com.example.android.podstone.R;
+import com.teldot.android.podstone.R;
 import com.teldot.android.podstone.data.provider.ShowContentProvider;
 import com.teldot.android.podstone.data.provider.ShowContract;
 import com.teldot.android.podstone.ui.widget.PlayerWidgetService;

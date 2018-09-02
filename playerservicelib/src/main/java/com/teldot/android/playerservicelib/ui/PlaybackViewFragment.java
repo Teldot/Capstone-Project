@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.playerservicelib.R;
+import com.teldot.android.playerservicelib.R;
 import com.teldot.android.playerservicelib.data.MediaItem;
 import com.teldot.android.playerservicelib.service.MediaPlaybackService;
 import com.teldot.android.playerservicelib.utils.NetUtils;

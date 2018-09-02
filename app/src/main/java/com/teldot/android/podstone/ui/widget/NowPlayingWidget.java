@@ -16,11 +16,11 @@ import android.widget.Toast;
 
 import com.teldot.android.playerservicelib.data.MediaItem;
 import com.teldot.android.playerservicelib.service.MediaPlaybackService;
-import com.example.android.podstone.R;
-import com.example.android.podstone.ui.FavoritesActivity;
-import com.example.android.podstone.ui.MainActivity;
-import com.example.android.podstone.ui.ShowActivity;
-import com.example.android.podstone.utils.NetworkUtils;
+import com.teldot.android.podstone.R;
+import com.teldot.android.podstone.ui.FavoritesActivity;
+import com.teldot.android.podstone.ui.MainActivity;
+import com.teldot.android.podstone.ui.ShowActivity;
+import com.teldot.android.podstone.utils.NetworkUtils;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Timeline;

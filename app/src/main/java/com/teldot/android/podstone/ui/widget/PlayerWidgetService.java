@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
-import com.example.android.podstone.R;
+import com.teldot.android.podstone.R;
 
 public class PlayerWidgetService extends IntentService {
     private static final String ACTION_PLAYING = "com.example.android.podstone.action.playing";

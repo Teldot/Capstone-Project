@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.podstone.R;
+import com.teldot.android.podstone.R;
 import com.teldot.android.podstone.data.entities.Channel;
-import com.example.android.podstone.utils.NetworkUtils;
+import com.teldot.android.podstone.utils.NetworkUtils;
 
 
 public class ChannelsListAdapter extends RecyclerView.Adapter<ChannelsListAdapter.ChannelsListAdapterViewHolder> {
