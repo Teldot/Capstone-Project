@@ -53,9 +53,14 @@ public final class NetworkUtils {
                 String QUERY_VAL = uriParts[0];
                 LIMIT_VAL = context.getString(R.string.PODCAST_DE_API_LIMIT_VAL);
                 OFFSET_VAL = uriParts[1];
+                LANG = context.getString(R.string.PODCAST_DE_API_LANG);
+                LANG_VAL = PreferenceManager
+                        .getDefaultSharedPreferences(context)
+                        .getString(context.getString(R.string.pref_key_lang), context.getString(R.string.pref_key_lang_default));
 
                 builtUri = Uri.parse(SEARCH_URL).buildUpon()
                         .appendQueryParameter(QUERY, QUERY_VAL)
+                        .appendQueryParameter(LANG, LANG_VAL)
                         .appendQueryParameter(LIMIT, LIMIT_VAL)
                         .appendQueryParameter(OFFSET, OFFSET_VAL)
                         .build();

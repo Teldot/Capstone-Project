@@ -2,6 +2,8 @@ package com.teldot.android.podstone.ui;
 
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,8 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.teldot.android.playerservicelib.data.MediaItem;
+import com.teldot.android.playerservicelib.service.MediaPlaybackService;
+import com.teldot.android.playerservicelib.ui.PlaybackViewFragment;
 import com.teldot.android.podstone.R;
 import com.teldot.android.podstone.data.entities.Channel;
 import com.teldot.android.podstone.data.entities.SearchResult;
@@ -23,7 +29,7 @@ import com.teldot.android.podstone.utils.FetchDataTask;
 //import com.google.android.gms.ads.AdRequest;
 //import com.google.android.gms.ads.AdView;
 
-public class MainActivity extends AppCompatActivity implements ChannelsListAdapter.ChannelsListAdapterOnClickHandler, FetchDataTask.AsyncTaskCompleteListener {
+public class MainActivity extends AppCompatActivity implements ChannelsListAdapter.ChannelsListAdapterOnClickHandler, FetchDataTask.AsyncTaskCompleteListener , PlaybackViewFragment.OnFragmentInteractionListener {
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ChannelsListAdapter adapter;
@@ -33,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
     private TextView tvSearchResults;
     private int FETCHDATA_TASK;
     private Parcelable listState;
+    private PlaybackViewFragment playbackViewFragment;
+    private MediaPlaybackService mService;
+
 
     private static final String K_SEARCH_RESULT = "K_SEARCH_RESULT";
     private static final String K_SEARCH_QUERY = "K_SEARCH_QUERY";
@@ -77,8 +86,21 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
             searchQuery = savedInstanceState.getString(K_SEARCH_QUERY);
             searchResult = (SearchResult) savedInstanceState.getSerializable(K_SEARCH_RESULT);
             FETCHDATA_TASK = savedInstanceState.getInt(K_FETCHDATA_TASK);
+
+            playbackViewFragment = (PlaybackViewFragment) getSupportFragmentManager().findFragmentByTag(PlaybackViewFragment.class.getName());
+
+
         } else {
             FETCHDATA_TASK = FetchDataTask.TASK_STARTUP_LIST;
+
+            ViewGroup playbackControlContainer = findViewById(R.id.player_frame);
+            playbackViewFragment = new PlaybackViewFragment();
+            playbackViewFragment.setShowAlways(false);
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(playbackControlContainer.getId(), playbackViewFragment, playbackViewFragment.getClass().getName())
+                    .commit();
         }
 
     }
@@ -88,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
         super.onResume();
         loadPodcasts(searchQuery);
         PlayerWidgetService.startActionWidgetPlaying(this);
+        setOpenIntet2Fragment();
     }
 
     private void loadPodcasts(String queryString) {
@@ -132,6 +155,22 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
         }
     }
 
+    private void setOpenIntet2Fragment() {
+        if (playbackViewFragment == null) return;
+        int listLength = playbackViewFragment.getMediaItems() == null ? 0 : playbackViewFragment.getMediaItems().length;
+        if (listLength == 1) {
+            Intent openIntent = new Intent(this, ShowActivity.class);
+            playbackViewFragment.setOpenIntent(openIntent);
+        } else if (listLength > 1) {
+            Intent openIntent = new Intent(this, FavoritesActivity.class);
+            playbackViewFragment.setOpenIntent(openIntent);
+        }
+    }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        setOpenIntet2Fragment();
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -216,4 +255,13 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
 
     }
 
+    @Override
+    public void onBindService(MediaPlaybackService service) {
+        mService = service;
+    }
+
+    @Override
+    public void onTrackChanged(int position, MediaItem mediaItem) {
+
+    }
 }

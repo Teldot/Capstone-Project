@@ -28,7 +28,10 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:title="@string/app_name" />
 
-
+            <FrameLayout
+                android:id="@+id/player_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
@@ -73,4 +76,12 @@
         <!--android:layout_gravity="center|bottom"-->
         <!--ads:adSize="BANNER"-->
         <!--ads:adUnitId="@string/banner_ad_unit_id" />-->
+
+    <FrameLayout
+        android:id="@+id/adView"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center|bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>
