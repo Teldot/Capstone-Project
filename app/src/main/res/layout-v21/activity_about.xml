@@ -21,6 +21,7 @@
         app:title="@string/about_act_toolbar_title" />
 
     <TextView
+        android:id="@+id/tv_app_ver"
         style="@style/TextAppearance.AppCompat.Display1"
         android:layout_width="match_parent"
         android:gravity="center"
@@ -85,8 +86,7 @@
         android:layout_marginRight="@dimen/podcast_list_item_card_margin"
         android:layout_marginEnd="@dimen/podcast_list_item_card_margin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/about_act_ico_title" />
+        android:layout_height="wrap_content" />
 
     <TextView
         style="@style/TextAppearance.AppCompat.Body1"
@@ -95,7 +95,6 @@
         android:layout_marginRight="@dimen/podcast_list_item_card_margin"
         android:layout_marginEnd="@dimen/podcast_list_item_card_margin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/about_act_ico_license" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

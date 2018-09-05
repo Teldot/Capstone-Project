@@ -18,7 +18,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 27
         versionCode 1
-        versionName '1.0.0.0'
+        versionName '1.0.0.1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -66,11 +66,14 @@ dependencies {
         exclude group: 'commons-logging', module: 'commons-logging'
     }
     implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'com.google.android.exoplayer:exoplayer:r2.2.0'
-    implementation('com.google.android.gms:play-services-ads:15.0.1') {
-        exclude group: 'commons-logging', module: 'commons-logging'
-        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-    }
+    implementation 'com.google.android.exoplayer:exoplayer:2.7.3'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.7.3'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.7.3'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.7.3'
+//    implementation('com.google.android.gms:play-services-ads:15.0.1') {
+//        exclude group: 'commons-logging', module: 'commons-logging'
+//        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+//    }
     implementation('com.google.api-client:google-api-client:1.23.0') {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'

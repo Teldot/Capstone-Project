@@ -5,16 +5,21 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.teldot.android.podstone.BuildConfig;
 import com.teldot.android.podstone.R;
 
 public class AboutActivity extends AppCompatActivity {
     private Toolbar tbToolbar;
     private ImageView imageView;
+    private TextView tvAppver;
 
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -28,15 +33,17 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-
+        tvAppver = findViewById(R.id.tv_app_ver);
+        String ver = String.format(getString(R.string.about_act_app_name), BuildConfig.VERSION_NAME);
+        tvAppver.setText(ver);
         tbToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(tbToolbar);
-//        tbToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onBackPressed();
-//            }
-//        });
+        tbToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         imageView = findViewById(R.id.iv_logo);
         //imageView.setOnClickListener(this);
 

@@ -124,15 +124,15 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
             });
 
         playerView.setControllerShowTimeoutMs(0);
-        playerView.setControllerVisibilityListener(new PlaybackControlView.VisibilityListener() {
-            @Override
-            public void onVisibilityChange(int visibility) {
-                if (visibility != PlaybackControlView.VISIBLE) {
-                    playerView.showController();
-                    playerView.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+//        playerView.setControllerVisibilityListener(new PlaybackControlView.VisibilityListener() {
+//            @Override
+//            public void onVisibilityChange(int visibility) {
+//                if (visibility != PlaybackControlView.VISIBLE) {
+//                    playerView.showController();
+//                    playerView.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        });
         playerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

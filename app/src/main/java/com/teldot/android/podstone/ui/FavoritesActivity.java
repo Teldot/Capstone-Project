@@ -38,10 +38,11 @@ import com.teldot.android.playerservicelib.ui.PlaybackViewFragment;
 import com.teldot.android.podstone.R;
 import com.teldot.android.podstone.data.provider.ShowContentProvider;
 import com.teldot.android.podstone.ui.widget.PlayerWidgetService;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+//import com.google.android.gms.ads.AdRequest;
+//import com.google.android.gms.ads.AdView;
 
 public class FavoritesActivity extends AppCompatActivity implements ShowListAdapter.ShowListItemIconOnClick, ShowListAdapter.ShowsListAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Cursor>, PlaybackViewFragment.OnFragmentInteractionListener {
+
     private static final String TAG = FavoritesActivity.class.getSimpleName();
 
     //    private final String K_SHOWS_DATA = "K_SHOWS_DATA";
@@ -57,6 +58,8 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private PlaybackViewFragment playbackViewFragment;
     private MediaPlaybackService mService;
+    private RecyclerView mRecyclerView;
+    private TextView tv_error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
 
         Toolbar tbToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(tbToolbar);
+        tv_error = findViewById(R.id.tv_error_mess);
         tbToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,16 +76,16 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
             }
         });
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
-        RecyclerView mRecyclerView = findViewById(R.id.rv_shows_list);
+        mRecyclerView = findViewById(R.id.rv_shows_list);
         showsAdapter = new ShowListAdapter(this, this, this);
         mRecyclerView.setAdapter(showsAdapter);
         layoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.shows_list_column_items));
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        AdView mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+//        AdView mAdView = findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        mAdView.loadAd(adRequest);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -125,7 +129,7 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
         int id = item.getItemId();
         if (id == R.id.play_all_favorites) {
             if (showsAdapter == null || showsAdapter.getShows() == null || showsAdapter.getShows().length == 0) {
-                Toast.makeText(this, R.string.favorites_activity_no_items_to_play, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.fav_act_no_items_to_play, Toast.LENGTH_LONG).show();
                 return true;
             }
 
@@ -273,12 +277,17 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        if (data != null || data.getCount() > 0) {
+        if (data != null && data.getCount() > 0) {
             showsAdapter.setIsFavorite(true);
             showsAdapter.swapData(data);
             if (listState != null) {
                 layoutManager.onRestoreInstanceState(listState);
             }
+            tv_error.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        } else {
+            tv_error.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
         }
         mSwipeRefreshLayout.setRefreshing(false);
         colorCurrentShow();
@@ -288,6 +297,7 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         MediaItem[] nullData = null;
         showsAdapter.swapData(nullData);
+        tv_error.setVisibility(View.GONE);
     }
 
 

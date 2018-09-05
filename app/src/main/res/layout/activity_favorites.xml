@@ -41,7 +41,11 @@
             android:layout_gravity="fill_vertical"
             android:animateLayoutChanges="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
+            <TextView
+                android:id="@+id/tv_error_mess"
+                tools:text="@string/fav_act_no_items_to_play"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_shows_list"
                 android:layout_width="match_parent"
@@ -51,12 +55,12 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center|bottom"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id" />
+    <!--<com.google.android.gms.ads.AdView-->
+        <!--android:id="@+id/adView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_gravity="center|bottom"-->
+        <!--ads:adSize="BANNER"-->
+        <!--ads:adUnitId="@string/banner_ad_unit_id" />-->
 </RelativeLayout>

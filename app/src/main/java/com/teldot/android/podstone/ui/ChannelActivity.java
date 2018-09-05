@@ -31,8 +31,8 @@ import com.teldot.android.podstone.data.provider.ShowContentProvider;
 import com.teldot.android.podstone.data.provider.ShowContract;
 import com.teldot.android.podstone.utils.FetchDataTask;
 import com.teldot.android.podstone.utils.NetworkUtils;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+//import com.google.android.gms.ads.AdRequest;
+//import com.google.android.gms.ads.AdView;
 
 import java.util.HashMap;
 
@@ -56,7 +56,7 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private PlaybackViewFragment playbackViewFragment;
-    private AdView mAdView;
+//    private AdView mAdView;
 
     private MediaPlaybackService mService;
 

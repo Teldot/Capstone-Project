@@ -1,0 +1,106 @@
+<resources>
+    <string name="app_name">PodStone</string>
+
+    <!--ADS BANNER-->
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
+    <!--MAIN ACTIVITY-->
+    <string name="main_activity_text_result">Resultados para: \'%s\'</string>
+
+    <!--CHANNEL ACTIVITY-->
+    <string name="activity_channel_rating">3.5</string>
+    <string name="podcast_list_item_tv_votes_tool_text">(50)</string>
+    <string name="podcast_list_item_tv_date_tool_text">2018-01-01</string>
+    <string name="podcast_list_item_play_icon_desc">Reproducir podcast</string>
+    <string name="podcast_list_item_fav_icon_desc">Marcar podcast como favorito</string>
+    <string name="podcast_list_item_podcast_img_desc">Imagen Podcast</string>
+    <string name="favorite_show_saved">Show -%s- marcado como favorito</string>
+    <string name="favorite_show_removed">Show fue removido</string>
+    <string name="favorite_show_save_error">Error guardando show</string>
+    <string name="favorite_show_remove_error">Error eliminando show</string>
+
+    <!--PODCAST LIST ITEM-->
+    <string name="podcast_list_item_title">Titulo del podcast</string>
+    <string name="podcast_list_item_date">2018-01-01</string>
+
+    <!--PODCAST.DE API-->
+    <string name="PODCAST_DE_API_SEARCH_URL">https://api.podcast.de/search.json</string>
+    <string name="PODCAST_DE_API_QUERY">q</string>
+    <string name="PODCAST_DE_API_LIMIT">limit</string>
+    <string name="PODCAST_DE_API_LIMIT_VAL">20</string>
+    <string name="PODCAST_DE_API_OFFSET">offset</string>
+    <string name="PODCAST_DE_API_OFFSET_VAL">0</string>
+    <string name="PODCAST_DE_API_LANG">lang</string>
+    <string name="PODCAST_DE_API_SHOW_URL">https://api.podcast.de/show/%s.json</string>
+    <string name="PODCAST_DE_API_CHANNEL_ULR">https://api.podcast.de/channel/%s.json</string>
+    <string name="PODCAST_DE_API_STARTUP_LIST">https://api.podcast.de/directory.json</string>
+    <string name="votes_format">(%s)</string>
+
+    <!--SHOW ACTIVITY-->
+    <string name="tools_text_tv_show_author">Autor</string>
+    <string name="tools_text_tv_show_copyright">Copyright</string>
+    <string name="tools_text_tv_show_votes">(50)</string>
+    <string name="action_share">Compartir</string>
+
+    <!--FAVORITES ACTIVITY-->
+    <string name="fav_act_toolbar_title">Lista de reproduccion de favoritos</string>
+    <string name="fav_act_delete_conf_title">Eliminar Podcast?</string>
+    <string name="fav_act_delete_conf_mess">Confirma eliminar Podcast de la lista de reproducción?</string>
+    <string name="fav_act_new_playing_title">Detener reproducción</string>
+    <string name="fav_act_new_playing_mess">Detener reproducción</string>
+    <string name="fav_act_no_items_to_play">No hay podcast favoritos para la reproducción</string>
+
+    <!--ABOUT ACTIVITY-->
+    <string name="about_act_toolbar_title"> Acerca de PodStone</string>
+    <string name="about_act_app_name">PodStone© v%s</string>
+    <string name="about_act_app_author">por: A. Mauricio Torres Silva</string>
+    <string name="about_act_title">Librerias de terceros</string>
+    <string name="about_act_pic_title">PICASSO - v2.5.2</string>
+    <string name="about_act_pic_license">Copyright© 2013 Square, Inc.\nLicensed under the Apache License, Version 2.0 (the \'License\')</string>
+
+
+    <!--MENU-->
+    <!--MENU ITEMS-->
+    <string name="menu_item_action_search">Buscar…</string>
+    <string name="menu_item_action_settings">Ajustes</string>
+    <string name="menu_item_action_favorites">Favoritos</string>
+    <string name="menu_item_action_about">Acerca de PodStone</string>
+
+    <!--FAVORITES MENU ITEMS-->
+    <string name="fav_menu_item_play_all">Reproducir todos</string>
+
+    <!--PREFERENCES ITEMS-->
+    <string name="pref_key_lang">key_lang</string>
+    <string name="pref_key_lang_default">@string/pref_lang_opt_value_eng</string>
+    <string name="pref_key_label_lang">Lenguaje del Podcast</string>
+
+    <string name="pref_lang_opt_label_eng">Inglés</string>
+    <string name="pref_lang_opt_label_ger">Alemán</string>
+    <string name="pref_lang_opt_label_spa">Español</string>
+    <string name="pref_lang_opt_label_fre">Francés</string>
+    <string name="pref_lang_opt_label_rus">Ruso</string>
+    <string name="pref_lang_opt_label_jap">Japonés</string>
+    <string name="pref_lang_opt_label_hin">Hindi</string>
+    <string name="pref_lang_opt_label_gre">Griego</string>
+    <string name="pref_lang_opt_label_por">Portugués</string>
+
+    <string name="pref_lang_opt_value_eng">en</string>
+    <string name="pref_lang_opt_value_ger">de</string>
+    <string name="pref_lang_opt_value_spa">es</string>
+    <string name="pref_lang_opt_value_fre">fr</string>
+    <string name="pref_lang_opt_value_rus">ru</string>
+    <string name="pref_lang_opt_value_jap">ja</string>
+    <string name="pref_lang_opt_value_hin">hi</string>
+    <string name="pref_lang_opt_value_gre">el</string>
+    <string name="pref_lang_opt_value_por">pt</string>
+    <string name="title_activity_settings">Ajustes</string>
+
+    <string name="add_widget">Agregar widget</string>
+    <string name="widget_image_description">Imagen Podcast</string>
+    <string name="widget_title_tools_text">Título del Podcast</string>
+    <string name="widget_author_tools_text">Autor del Podcast</string>
+    <string name="show_activity_fav_icon_content_desc">Agregar/Eliminar podcast de favoritos</string>
+    <string name="activity_channel_iv_image_content_dec">Imagen del canal</string>
+    <string name="podstone_logo">Logo de PodStone</string>
+
+</resources>

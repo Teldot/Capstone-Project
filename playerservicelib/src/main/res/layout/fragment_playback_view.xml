@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.PlaybackViewFragment">
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
@@ -10,6 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:layout_margin="@dimen/playback_view_player_margin"
-        android:gravity="center" />
+        android:gravity="center"
+
+        app:show_timeout="0"
+        app:hide_on_touch="false"
+        app:use_artwork="false"
+        app:controller_layout_id="@layout/exo_playback_control_view"/>
 
 </FrameLayout>

@@ -80,11 +80,11 @@
 
             <TextView
                 android:id="@+id/tv_song_number_on_list"
-                android:textColor="@color/playback_view_text_color"
-                android:textSize="@dimen/show_player_control_title_text_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="@string/template_song_number_on_list"/>
+                android:textColor="@color/playback_view_text_color"
+                android:textSize="@dimen/show_player_control_title_text_size"
+                tools:text="@string/template_song_number_on_list" />
 
         </LinearLayout>
 
@@ -106,7 +106,14 @@
                 android:textSize="@dimen/show_player_control_time_pos_dur_text_size"
                 android:textStyle="bold" />
 
-            <SeekBar
+            <!--<SeekBar-->
+            <!--android:id="@id/exo_progress"-->
+            <!--style="?android:attr/progressBarStyleHorizontal"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="8dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:focusable="false" />-->
+            <com.google.android.exoplayer2.ui.DefaultTimeBar
                 android:id="@id/exo_progress"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"

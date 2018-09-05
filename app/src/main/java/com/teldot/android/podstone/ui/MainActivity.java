@@ -20,8 +20,8 @@ import com.teldot.android.podstone.data.entities.Channel;
 import com.teldot.android.podstone.data.entities.SearchResult;
 import com.teldot.android.podstone.ui.widget.PlayerWidgetService;
 import com.teldot.android.podstone.utils.FetchDataTask;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+//import com.google.android.gms.ads.AdRequest;
+//import com.google.android.gms.ads.AdView;
 
 public class MainActivity extends AppCompatActivity implements ChannelsListAdapter.ChannelsListAdapterOnClickHandler, FetchDataTask.AsyncTaskCompleteListener {
 

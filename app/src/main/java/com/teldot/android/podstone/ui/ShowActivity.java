@@ -35,8 +35,8 @@ import com.teldot.android.podstone.ui.widget.PlayerWidgetService;
 import com.teldot.android.podstone.utils.NetworkUtils;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+//import com.google.android.gms.ads.AdRequest;
+//import com.google.android.gms.ads.AdView;
 
 public class ShowActivity extends AppCompatActivity implements PlaybackViewFragment.OnFragmentInteractionListener {
 
@@ -72,9 +72,9 @@ public class ShowActivity extends AppCompatActivity implements PlaybackViewFragm
         tvCopyright = findViewById(R.id.tv_show_copyright);
         tvDescription = findViewById(R.id.tv_show_description);
         ibFavIcon = findViewById(R.id.favorite_icon);
-        AdView mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+//        AdView mAdView = findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        mAdView.loadAd(adRequest);
 
 
         if (savedInstanceState != null) {

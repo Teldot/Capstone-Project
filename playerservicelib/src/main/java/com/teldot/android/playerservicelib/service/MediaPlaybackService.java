@@ -8,6 +8,8 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.teldot.android.playerservicelib.data.MediaItem;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -31,7 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class MediaPlaybackService extends Service implements ExoPlayer.EventListener {
+public class MediaPlaybackService extends Service implements Player.EventListener {
     private static final String TAG = MediaPlaybackService.class.getSimpleName();
     public static final int INITIAL_INDEX = -1;
 
@@ -73,6 +75,7 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
 
             // Set the ExoPlayer.EventListener to this activity.
             mExoPlayer.addListener(this);
+
         }
 
     }
@@ -178,9 +181,18 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
     //***************************************************
     //    EXOPLAYER EVENTS
     //***************************************************
-    @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {
+//    @Override
+//    public void onTimelineChanged(Timeline timeline, Object manifest) {
 //        if (mediaPlaybackServiceEventHandler != null)
+//            mediaPlaybackServiceEventHandler.onTimelineChanged(timeline, manifest);
+//        if (mediaPlaybackServiceEventHandlers != null && mediaPlaybackServiceEventHandlers.size() > 0)
+//            for (MediaPlaybackServiceEventHandler ev : mediaPlaybackServiceEventHandlers)
+//                ev.onTimelineChanged(timeline, manifest);
+//    }
+
+    @Override
+    public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
+        //        if (mediaPlaybackServiceEventHandler != null)
 //            mediaPlaybackServiceEventHandler.onTimelineChanged(timeline, manifest);
         if (mediaPlaybackServiceEventHandlers != null && mediaPlaybackServiceEventHandlers.size() > 0)
             for (MediaPlaybackServiceEventHandler ev : mediaPlaybackServiceEventHandlers)
@@ -220,6 +232,16 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
     }
 
     @Override
+    public void onRepeatModeChanged(int repeatMode) {
+
+    }
+
+    @Override
+    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+
+    }
+
+    @Override
     public void onPlayerError(ExoPlaybackException error) {
 //        if (mediaPlaybackServiceEventHandler != null)
 //            mediaPlaybackServiceEventHandler.onPlayerError(error);
@@ -228,13 +250,31 @@ public class MediaPlaybackService extends Service implements ExoPlayer.EventList
                 ev.onPlayerError(error);
     }
 
+//    @Override
+//    public void onPositionDiscontinuity() {
+//        if (mediaPlaybackServiceEventHandler != null)
+//            mediaPlaybackServiceEventHandler.onPositionDiscontinuity();
+//        if (mediaPlaybackServiceEventHandlers != null && mediaPlaybackServiceEventHandlers.size() > 0)
+//            for (MediaPlaybackServiceEventHandler ev : mediaPlaybackServiceEventHandlers)
+//                ev.onPositionDiscontinuity();
+    //}
     @Override
-    public void onPositionDiscontinuity() {
+    public void onPositionDiscontinuity(int reason) {
 //        if (mediaPlaybackServiceEventHandler != null)
 //            mediaPlaybackServiceEventHandler.onPositionDiscontinuity();
         if (mediaPlaybackServiceEventHandlers != null && mediaPlaybackServiceEventHandlers.size() > 0)
             for (MediaPlaybackServiceEventHandler ev : mediaPlaybackServiceEventHandlers)
                 ev.onPositionDiscontinuity();
+    }
+
+    @Override
+    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+    }
+
+    @Override
+    public void onSeekProcessed() {
+
     }
 
     public int getCurrentMediaItemIndex() {

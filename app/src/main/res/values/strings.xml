@@ -48,16 +48,16 @@
     <string name="fav_act_delete_conf_mess">Confirm delete Podcast from the play list?</string>
     <string name="fav_act_new_playing_title">Stop playback</string>
     <string name="fav_act_new_playing_mess">Stop playback</string>
+    <string name="fav_act_no_items_to_play">No favorites podcasts to play</string>
 
     <!--ABOUT ACTIVITY-->
     <string name="about_act_toolbar_title">About PodStone</string>
-    <string name="about_act_app_name">PodStone© v1.0.0</string>
-    <string name="about_act_app_author">by Mauricio Torres</string>
+    <string name="about_act_app_name">PodStone© v%s</string>
+    <string name="about_act_app_author">by A. Mauricio Torres Silva</string>
     <string name="about_act_title">Third-Party Libraries</string>
     <string name="about_act_pic_title">PICASSO - v2.5.2</string>
     <string name="about_act_pic_license">Copyright© 2013 Square, Inc.\nLicensed under the Apache License, Version 2.0 (the \'License\')</string>
-    <string name="about_act_ico_title">App Icon</string>
-    <string name="about_act_ico_license">Icon made by Freepik from www.flaticon.com\nLicensed by Creative Commons BY 3.0 - CC 3.0 BY</string>
+
 
 
     <!--MENU-->
@@ -102,7 +102,6 @@
     <string name="widget_author_tools_text">Podcast Author</string>
     <string name="show_activity_fav_icon_content_desc">Set on/off as favorite podcast</string>
     <string name="activity_channel_iv_image_content_dec">Channel Image</string>
-    <string name="favorites_activity_no_items_to_play">No favorites podcast to play</string>
     <string name="podstone_logo">PodStone Logo</string>
 
 </resources>
