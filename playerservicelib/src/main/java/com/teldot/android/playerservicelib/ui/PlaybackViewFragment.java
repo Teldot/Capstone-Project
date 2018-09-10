@@ -389,16 +389,27 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
         String mess;
         switch (error.type) {
             case ExoPlaybackException.TYPE_RENDERER:
-                mess = getString(R.string.playbackviewfragment_error_type_render_mess);
+                mess = mContext.getString(R.string.playbackviewfragment_error_type_render_mess);
                 break;
             case ExoPlaybackException.TYPE_SOURCE:
-                mess = getString(R.string.playbackviewfragment_error_type_source_mess);
+                mess = mContext.getString(R.string.playbackviewfragment_error_type_source_mess);
                 break;
             default:
-                mess = getString(R.string.playbackviewfragment_error_type_default_mess);
+
+                Exception rendererException = error.getRendererException();
+                Exception sourceException = error.getSourceException();
+                Exception unexpectedException = error.getUnexpectedException();
+                if (rendererException != null)
+                    mess = rendererException.getMessage();
+                else if (sourceException != null)
+                    mess = sourceException.getMessage();
+                else if (unexpectedException != null)
+                    mess = unexpectedException.getMessage();
+                else
+                    mess = mContext.getString(R.string.playbackviewfragment_error_type_default_mess);
                 break;
         }
-        Toast.makeText(getContext(), mess, Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, mess, Toast.LENGTH_LONG).show();
     }
 
     @Override

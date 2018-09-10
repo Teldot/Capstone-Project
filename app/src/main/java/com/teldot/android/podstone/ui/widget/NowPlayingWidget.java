@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.IBinder;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -120,6 +121,8 @@ public class NowPlayingWidget extends AppWidgetProvider {
                 } else {
                     openIntent = new Intent(context, MainActivity.class);
                 }
+                if(Build.VERSION.SDK_INT <=Build.VERSION_CODES.LOLLIPOP_MR1)
+                    openIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(openIntent);
                 break;
             default:

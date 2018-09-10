@@ -32,6 +32,13 @@
                 android:id="@+id/player_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_error_mess"
+                android:text="@string/fav_act_no_items_to_play"
+                android:background="@color/colorPrimaryLight"
+                android:textColor="@color/colorPrimaryText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
@@ -41,11 +48,7 @@
             android:layout_gravity="fill_vertical"
             android:animateLayoutChanges="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
-            <TextView
-                android:id="@+id/tv_error_mess"
-                tools:text="@string/fav_act_no_items_to_play"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_shows_list"
                 android:layout_width="match_parent"

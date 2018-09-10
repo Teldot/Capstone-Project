@@ -5,7 +5,7 @@ import android.provider.BaseColumns;
 
 public class ShowContract {
 
-    public static final String AUTHORITY = "com.example.android.podstone";
+    public static final String AUTHORITY = "com.teldot.android.podstone";
     private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     static final String PATH_SHOWS = "shows";

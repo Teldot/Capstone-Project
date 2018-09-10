@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+//import com.crashlytics.android.Crashlytics;
 import com.teldot.android.playerservicelib.data.MediaItem;
 import com.teldot.android.playerservicelib.service.MediaPlaybackService;
 import com.teldot.android.playerservicelib.ui.PlaybackViewFragment;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
         setContentView(R.layout.activity_main);
 
         //FORCE A CRASH
-//        Crashlytics.getInstance().crash();
+        //Crashlytics.getInstance().crash();
 
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         Toolbar toolbar = findViewById(R.id.search_toolbar);
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements ChannelsListAdapt
 
             ViewGroup playbackControlContainer = findViewById(R.id.player_frame);
             playbackViewFragment = new PlaybackViewFragment();
-            playbackViewFragment.setShowAlways(false);
+            playbackViewFragment.setShowAlways(true);
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
