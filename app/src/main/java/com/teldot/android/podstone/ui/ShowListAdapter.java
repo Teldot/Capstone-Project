@@ -12,14 +12,17 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.teldot.android.playerservicelib.data.MediaItem;
 import com.teldot.android.podstone.R;
 import com.teldot.android.podstone.data.provider.ShowContract;
+import com.teldot.android.podstone.utils.FetchDataTask;
 import com.teldot.android.podstone.utils.NetworkUtils;
 
 
-public class ShowListAdapter extends RecyclerView.Adapter<ShowListAdapter.ShowListAdapterViewHolder> {
+public class ShowListAdapter extends RecyclerView.Adapter<ShowListAdapter.ShowListAdapterViewHolder> implements FetchDataTask.AsyncTaskCompleteListener<Object> {
+
 
     public interface ShowsListAdapterOnClickHandler {
         void onClick(MediaItem podcast, View v);
@@ -36,11 +39,13 @@ public class ShowListAdapter extends RecyclerView.Adapter<ShowListAdapter.ShowLi
     private final Context mContext;
     private final ShowsListAdapterOnClickHandler mClickHandler;
     private final ShowListItemIconOnClick showListItemIconOnClick;
+    private final RecyclerView mRecyclerView;
 
-    ShowListAdapter(ShowsListAdapterOnClickHandler onClickHandler, ShowListItemIconOnClick onClickIcon, Context context) {
+    ShowListAdapter(RecyclerView recyclerView, ShowsListAdapterOnClickHandler onClickHandler, ShowListItemIconOnClick onClickIcon, Context context) {
         mContext = context;
         mClickHandler = onClickHandler;
         showListItemIconOnClick = onClickIcon;
+        mRecyclerView = recyclerView;
     }
 
     @NonNull
@@ -76,6 +81,49 @@ public class ShowListAdapter extends RecyclerView.Adapter<ShowListAdapter.ShowLi
             holder.ibFavIcon.setImageResource(R.drawable.ic_star_black_24dp);
         else
             holder.ibFavIcon.setImageResource(R.drawable.ic_star_border_black_24dp);
+        checkShowUrl(position, getShows()[position].MediaUri);
+    }
+
+    private void checkShowUrl(int index, String url) {
+        new FetchDataTask(mContext,
+                this,
+                FetchDataTask.TASK_CHECK_URL)
+                .execute(url, String.valueOf(index));
+    }
+
+    @Override
+    public void onTaskComplete(Object result, int task) {
+        switch (task) {
+            case FetchDataTask.TASK_CHECK_URL:
+                String res = String.valueOf(result);
+                String[] resS = res.split("-");
+                boolean isOK = Boolean.parseBoolean(resS[1]);
+                int pos = Integer.parseInt(resS[0]);
+                final ShowListAdapterViewHolder holder = (ShowListAdapterViewHolder) mRecyclerView.findViewHolderForAdapterPosition(pos);
+                holder.ibPlayShareIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (holder.mediaUrlOK)
+                            showListItemIconOnClick.onClick(getShows()[holder.getAdapterPosition()], v);
+                        else {
+                            holder.ibFavIcon.setEnabled(false);
+                            String mes = mContext.getResources().getString(R.string.podcast_list_item_broken_link);
+                            Toast.makeText(mContext, mes, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+                if (!isOK) return;
+
+                holder.mediaUrlOK = true;
+                holder.ibPlayShareIcon.setImageResource(R.drawable.ic_play_circle_outline_black_24dp);
+                break;
+        }
+    }
+
+    @Override
+    public void onPreExecute() {
+
     }
 
     @Override
@@ -146,6 +194,7 @@ public class ShowListAdapter extends RecyclerView.Adapter<ShowListAdapter.ShowLi
         final TextView tvDescription;
         final ImageButton ibPlayShareIcon;
         final ImageButton ibFavIcon;
+        public boolean mediaUrlOK = false;
 
         ShowListAdapterViewHolder(View view) {
             super(view);
@@ -159,17 +208,12 @@ public class ShowListAdapter extends RecyclerView.Adapter<ShowListAdapter.ShowLi
                 ibPlayShareIcon = view.findViewById(R.id.share_icon);
             else
                 ibPlayShareIcon = view.findViewById(R.id.play_icon);
-            ibPlayShareIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showListItemIconOnClick.onClick(getShows()[getAdapterPosition()], v);
-                }
-            });
             ibFavIcon = view.findViewById(R.id.favorite_icon);
             ibFavIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showListItemIconOnClick.onClick(getShows()[getAdapterPosition()], v);
+                    if (mediaUrlOK)
+                        showListItemIconOnClick.onClick(getShows()[getAdapterPosition()], v);
                 }
             });
 
@@ -178,6 +222,9 @@ public class ShowListAdapter extends RecyclerView.Adapter<ShowListAdapter.ShowLi
 
         @Override
         public void onClick(View v) {
+            if (!isFavorite && !mediaUrlOK)
+                return;
+
             int adapterPosition = getAdapterPosition();
             MediaItem o = getShows()[adapterPosition];
 

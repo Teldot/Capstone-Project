@@ -77,7 +77,7 @@ public class FavoritesActivity extends AppCompatActivity implements ShowListAdap
         });
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         mRecyclerView = findViewById(R.id.rv_shows_list);
-        showsAdapter = new ShowListAdapter(this, this, this);
+        showsAdapter = new ShowListAdapter(mRecyclerView, this, this, this);
         mRecyclerView.setAdapter(showsAdapter);
         layoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.shows_list_column_items));
         mRecyclerView.setLayoutManager(layoutManager);

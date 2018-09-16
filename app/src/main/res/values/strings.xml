@@ -18,6 +18,7 @@
     <string name="favorite_show_removed">Show was removed successfully</string>
     <string name="favorite_show_save_error">Error saving show</string>
     <string name="favorite_show_remove_error">Error saving show</string>
+    <string name="podcast_list_item_broken_link">Show\'s link is broken</string>
 
     <!--PODCAST LIST ITEM-->
     <string name="podcast_list_item_title">Title of the podcast</string>

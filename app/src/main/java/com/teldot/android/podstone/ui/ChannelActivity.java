@@ -82,7 +82,7 @@ public class ChannelActivity extends AppCompatActivity implements FetchDataTask.
         tvTitle = findViewById(R.id.podcast_list_item_tv_title);
         tvDate = findViewById(R.id.podcast_list_item_tv_date);
         mRecyclerView = findViewById(R.id.rv_shows_list);
-        showsAdapter = new ShowListAdapter(this, this, this);
+        showsAdapter = new ShowListAdapter(mRecyclerView,this, this, this);
         mRecyclerView.setAdapter(showsAdapter);
         layoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.shows_list_column_items));
         mRecyclerView.setLayoutManager(layoutManager);

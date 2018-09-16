@@ -18,6 +18,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
 public final class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
@@ -157,5 +159,24 @@ public final class NetworkUtils {
     public static Bitmap getImageFromBytes(byte[] image) {
         if (image == null || image.length == 0) return null;
         return BitmapFactory.decodeByteArray(image, 0, image.length);
+    }
+
+    public static boolean checkurl(String url) {
+        Integer[] eCodes = {404, 403};
+        List<Integer> errorCodes = Arrays.asList(eCodes);
+        try {
+            HttpURLConnection.setFollowRedirects(false);
+            HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+            con.setRequestMethod("GET");
+            Log.i("NetworkUtils", url);
+            Log.i("NetworkUtils", "ResponseCode: " + con.getResponseCode());
+            boolean res = !errorCodes.contains(con.getResponseCode());
+            Log.i("NetworkUtils", "checkUrl: " + res);
+            con.disconnect();
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

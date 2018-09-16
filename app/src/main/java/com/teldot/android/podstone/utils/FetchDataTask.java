@@ -25,6 +25,7 @@ public class FetchDataTask extends AsyncTask {
     public static final int TASK_SEARCH_LIST = 222;
     public static final int TASK_SINGLE_CHANNEL = 347;
     public static final int TASK_SINGLE_SHOW = 91;
+    public static final int TASK_CHECK_URL = 207;
 
     private static final String SHOW_OBJ = "show";
     private static final String SHOW_AUTHOR = "author";
@@ -90,6 +91,10 @@ public class FetchDataTask extends AsyncTask {
                 url = NetworkUtils.buildURL(mContext, Task, new String[]{qShow});
                 res = NetworkUtils.getStringResponseFromHttpUrl(url).toString();
                 return getShowInfoFromJson(res);
+            case TASK_CHECK_URL:
+                String qShowUrl = objects[0].toString();
+                String showIndex = objects[1].toString();
+                return showIndex + "-" + NetworkUtils.checkurl(qShowUrl);
             default:
                 return null;
         }
