@@ -3,5 +3,5 @@
     android:initialLayout="@layout/now_playing_widget"
     android:minHeight="56dp"
     android:minWidth="272dp"
-    android:previewImage="@drawable/ic_podcast"
+    android:previewImage="@drawable/ic_podcast_big"
     android:updatePeriodMillis="1800000" />
