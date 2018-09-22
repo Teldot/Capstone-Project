@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +21,8 @@ public class AboutActivity extends AppCompatActivity {
     private Toolbar tbToolbar;
     private ImageView imageView;
     private TextView tvAppver;
+    private TextView tvTermsCond;
+    private TextView tvPrivPol;
 
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -45,6 +48,10 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
         imageView = findViewById(R.id.iv_logo);
+        tvTermsCond = findViewById(R.id.tv_terms_cond);
+        tvPrivPol = findViewById(R.id.tv_privacy_policy);
+        tvTermsCond.setMovementMethod(LinkMovementMethod.getInstance());
+        tvPrivPol.setMovementMethod(LinkMovementMethod.getInstance());
         //imageView.setOnClickListener(this);
 
     }

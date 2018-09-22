@@ -58,6 +58,8 @@
     <string name="about_act_title">Third-Party Libraries</string>
     <string name="about_act_pic_title">PICASSO - v2.5.2</string>
     <string name="about_act_pic_license">Copyright© 2013 Square, Inc.\nLicensed under the Apache License, Version 2.0 (the \'License\')</string>
+    <string name="about_act_terms_cond"><a href="https://drive.google.com/file/d/16YTQUcauJz7Z35u3Ko0ErqnNqz9Z7wIl/view">Terms &amp; Conditions</a></string>
+    <string name="about_act_privacy_policy"><a href="https://drive.google.com/file/d/1hxUHc0tqU2qYqME5oQoLJ43nNZOfDTsD/view">Privacy Policy</a></string>
 
 
 
