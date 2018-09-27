@@ -50,6 +50,7 @@ public class MediaPlaybackService extends Service implements Player.EventListene
         return mExoPlayer;
     }
 
+
     public boolean isNowPlaying() {
         return mExoPlayer != null && mExoPlayer.getPlayWhenReady();
     }
