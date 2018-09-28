@@ -54,6 +54,7 @@ public class PlaybackViewFragment extends Fragment implements MediaPlaybackServi
     public boolean mNowPlayingScreen = false;
     private boolean mShowAlways = false;
 
+
     public SimpleExoPlayerView playerView;
 
     private ImageButton buttonNext;
