@@ -4,6 +4,7 @@ import com.teldot.android.playerservicelib.data.MediaItem;
 
 import java.io.Serializable;
 
+//Entity for Channel information
 public class Channel implements Serializable {
     public long ChannelId;
     public String Title;
